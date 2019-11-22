@@ -11,7 +11,6 @@ namespace Lab3Game
         private SpriteBatch _spriteBatch;
 
         private BasicEffect _effect;
-        private Matrix _projection;
 
         private Vector2 _camPos;
 
@@ -24,11 +23,12 @@ namespace Lab3Game
 
         protected override void Initialize()
         {
-            _effect = new BasicEffect(_graphics.GraphicsDevice);
-            _effect.Texture = new Texture2D(_graphics.GraphicsDevice, 1, 1);
+            _effect = new BasicEffect(_graphics.GraphicsDevice)
+            {
+                Texture = new Texture2D(_graphics.GraphicsDevice, 1, 1),
+                TextureEnabled = true,
+            };
             _effect.Texture.SetData(new[] {Color.Red});
-            _projection = Matrix.CreateOrthographic(3f, 2f, 0.1f, 100f);
-            //_world
 
             base.Initialize();
         }
@@ -81,45 +81,16 @@ namespace Lab3Game
 
             var cam3 = new Vector3(_camPos, 1f);
             _effect.View = Matrix.CreateLookAt(cam3, cam3 + Vector3.Forward, Vector3.Up);
-            _effect.Projection = _projection;
+            _effect.Projection = Matrix.CreateOrthographic(10f, 10f, 0.1f, 100f);
 
-            var vertices = new List<VertexPositionTexture>();
-            var indices = new List<short>();
-
-            // create quad
-            vertices.Add(new VertexPositionTexture
-            {
-                Position = new Vector3(-0.5f, -0.5f, 0),
-                TextureCoordinate = new Vector2(0f, 0f)
-            });
-            vertices.Add(new VertexPositionTexture
-            {
-                Position = new Vector3(-0.5f, 0.5f, 0),
-                TextureCoordinate = new Vector2(0f, 1f)
-            });
-            vertices.Add(new VertexPositionTexture
-            {
-                Position = new Vector3(0.5f, 0.5f, 0),
-                TextureCoordinate = new Vector2(1f, 1f)
-            });
-            vertices.Add(new VertexPositionTexture
-            {
-                Position = new Vector3(0.5f, -0.5f, 0),
-                TextureCoordinate = new Vector2(1f, 0f)
-            });
-            indices.Add(0);
-            indices.Add(1);
-            indices.Add(2);
-            indices.Add(0);
-            indices.Add(2);
-            indices.Add(3);
-
-            var vertBuff = new VertexBuffer(_graphics.GraphicsDevice, typeof(VertexPositionTexture), vertices.Count,
+            var vertBuff = new VertexBuffer(_graphics.GraphicsDevice, typeof(VertexPositionTexture),
+                Models.Instance.QuadVerts.Length,
                 BufferUsage.WriteOnly);
-            vertBuff.SetData(vertices.ToArray());
-            var indexBuff = new IndexBuffer(_graphics.GraphicsDevice, typeof(short), indices.Count,
+            vertBuff.SetData(Models.Instance.QuadVerts);
+            var indexBuff = new IndexBuffer(_graphics.GraphicsDevice, typeof(short),
+                Models.Instance.QuadInds.Length,
                 BufferUsage.WriteOnly);
-            indexBuff.SetData(indices.ToArray());
+            indexBuff.SetData(Models.Instance.QuadInds);
 
 
             var device = _graphics.GraphicsDevice;
@@ -134,8 +105,8 @@ namespace Lab3Game
             device.SetVertexBuffer(vertexBuffer);
             device.Indices = indexBuffer;
 
-            var rasterizerState = new RasterizerState {CullMode = CullMode.None};
-            GraphicsDevice.RasterizerState = rasterizerState;
+            var rasterizerState = new RasterizerState {CullMode = CullMode.CullCounterClockwiseFace};
+            device.RasterizerState = rasterizerState;
 
             foreach (var pass in effect.CurrentTechnique.Passes)
             {
