@@ -1,3 +1,5 @@
 bin/
 obj/
 /packages/
+Lab3Game/Content/bin/
+Lab3Game/Content/obj/
