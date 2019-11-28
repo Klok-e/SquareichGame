@@ -2,23 +2,23 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Lab3Game
+namespace Lab3Game.ResourceManagers
 {
     public class Models
     {
         public static Models Instance { get; private set; }
 
-        public readonly Mesh quad;
+        public readonly Mesh<VertexPositionTexture> quad;
 
-        public readonly Mesh triangle;
+        public readonly Mesh<VertexPositionTexture> triangle;
 
         private Models(GraphicsDevice device)
         {
             var (quadVerts, quadInds) = GetQuad();
-            quad = new Mesh(device, quadVerts, quadInds);
+            quad = new Mesh<VertexPositionTexture>(device, quadVerts, quadInds);
 
             var (triVerts, triInds) = GetTriangle();
-            triangle = new Mesh(device, triVerts, triInds);
+            triangle = new Mesh<VertexPositionTexture>(device, triVerts, triInds);
         }
 
         public static void Initialize(GraphicsDevice device)

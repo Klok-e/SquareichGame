@@ -6,17 +6,46 @@
     <e p="D:\Doc\PY\C#\MyGameUni" t="IncludeFlat">
       <e p=".git\info\exclude" t="IncludeRecursive" />
       <e p="Lab3Game" t="IncludeRecursive">
-        <e p="BackGround.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="Camera.cs" t="Include" />
         <e p="Content" t="Include">
+          <e p="bin" t="Include">
+            <e p="DesktopGL" t="Include">
+              <e p="CloudyBackground.xnb" t="Include" />
+              <e p="Content" t="Include">
+                <e p="CloudyBackground.xnb" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="CloudyBackground.hlsl" t="Include" />
           <e p="Content.mgcb" t="Include" />
+          <e p="obj" t="Include">
+            <e p="DesktopGL" t="Include">
+              <e p=".mgcontent" t="Include" />
+              <e p=".mgstats" t="Include" />
+              <e p="CloudyBackground.mgcontent" t="Include" />
+              <e p="Content" t="Include">
+                <e p=".mgcontent" t="Include" />
+                <e p="CloudyBackground.mgcontent" t="Include" />
+              </e>
+            </e>
+          </e>
         </e>
-        <e p="GameObject.cs" t="Include" />
-        <e p="IRenderable.cs" t="Include" />
+        <e p="CustomEffects" t="Include">
+          <e p="CloudyBackgroundEffect.cs" t="Include" />
+        </e>
+        <e p="Entities" t="Include">
+          <e p="BackGround.cs" t="Include" />
+          <e p="GameObject.cs" t="Include" />
+          <e p="Terrain.cs" t="Include" />
+        </e>
+        <e p="Interfaces" t="Include">
+          <e p="IRegisterable.cs" t="Include" />
+          <e p="IRenderable.cs" t="Include" />
+          <e p="IUpdatable.cs" t="Include" />
+        </e>
         <e p="Lab3Game.csproj" t="IncludeRecursive" />
         <e p="Mesh.cs" t="Include" />
-        <e p="Models.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netcoreapp3.0" t="Include">
@@ -26,9 +55,13 @@
         </e>
         <e p="Program.cs" t="Include" />
         <e p="Renderer.cs" t="Include" />
+        <e p="ResourceManagers" t="Include">
+          <e p="Effects.cs" t="Include" />
+          <e p="Models.cs" t="Include" />
+          <e p="Textures.cs" t="Include" />
+        </e>
         <e p="SuperCoolGame.cs" t="Include" />
-        <e p="Terrain.cs" t="Include" />
-        <e p="Textures.cs" t="Include" />
+        <e p="Ticker.cs" t="Include" />
       </e>
       <e p="MyGameUni.sln" t="IncludeFlat" />
       <e p="packages" t="ExcludeRecursive" />

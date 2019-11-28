@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Lab3Game
+namespace Lab3Game.ResourceManagers
 {
     public class Textures
     {

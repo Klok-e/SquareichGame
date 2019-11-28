@@ -28,7 +28,7 @@ namespace Lab3Game
             return (width / 2f * CamSize, height / 2f * CamSize);
         }
 
-        public Camera Translate(Vector2 translate)
+        public Camera Translate(Vector2 translate, bool instant = false)
         {
             var (widthOffset, heightOffset) = GetOffset();
             var newPos = CamPos;
@@ -61,7 +61,7 @@ namespace Lab3Game
             return this;
         }
 
-        public Camera SetSize(float newSize)
+        public Camera SetSize(float newSize, bool instant = false)
         {
             CamSize = newSize;
             var newCamSize = CamSize;

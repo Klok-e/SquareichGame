@@ -5,9 +5,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Lab3Game
 {
-    public class Mesh
+    public class Mesh<T>
+        where T : struct, IVertexType
     {
-        private readonly List<VertexPositionTexture> _vertices = new List<VertexPositionTexture>();
+        private readonly List<T> _vertices = new List<T>();
         private readonly List<short> _indices = new List<short>();
         private bool _buffersChanged = true;
 
@@ -46,14 +47,14 @@ namespace Lab3Game
             _device = device;
         }
 
-        public Mesh(GraphicsDevice device, IEnumerable<VertexPositionTexture> vertices, IEnumerable<short> indices) :
+        public Mesh(GraphicsDevice device, IEnumerable<T> vertices, IEnumerable<short> indices) :
             this(device)
         {
             _vertices.AddRange(vertices);
             _indices.AddRange(indices);
         }
 
-        public void AddVert(VertexPositionTexture vert)
+        public void AddVert(T vert)
         {
             _buffersChanged = true;
             _vertices.Add(vert);
@@ -75,7 +76,7 @@ namespace Lab3Game
             _indBuffer.SetData(_indices.ToArray());
 
             // vertex
-            _vertBuffer = new VertexBuffer(_device, typeof(VertexPositionTexture), _vertices.Count,
+            _vertBuffer = new VertexBuffer(_device, typeof(T), _vertices.Count,
                 BufferUsage.WriteOnly);
             _vertBuffer.SetData(_vertices.ToArray());
         }
