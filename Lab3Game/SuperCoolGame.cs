@@ -50,7 +50,7 @@ namespace Lab3Game
             Effects.Initialize(_graphics.GraphicsDevice, Content);
 
             var inst = Effects.Instance;
-            _renderer = new Renderer(inst.basicEffect, inst.cloudsEffect);
+            _renderer = new Renderer(inst.basicEffect, inst.cloudsEffect, inst.randomSampleTextureEffect);
 
             CreateScene();
         }
@@ -121,29 +121,16 @@ namespace Lab3Game
             _camera = new Camera(_graphics.GraphicsDevice, new Vector2(), 0.03f,
                 new Vector2(60f, 20f), new Vector2(-10f, -6f));
             _camera.SetSize(_camera.CamSize);
-            
+
             // background
-            Register(new Background(Models.Instance.quad, new Vector2(18f, 5f), new Vector2(55f, 20f)));
+            Register(new Background(new Vector2(18f, 5f), new Vector2(55f, 20f)));
 
             // ground
-            Register(new Terrain(Models.Instance.quad, new Vector2(21f, -5f), new Vector2(51f, 1f), 0f,
-                Effects.Instance.basicEffect, Textures.Instance.brown));
-            Register(new Terrain(Models.Instance.quad, new Vector2(-7f, -3f), new Vector2(5f, 5f), 0f,
-                Effects.Instance.basicEffect, Textures.Instance.brown));
-            Register(new Terrain(Models.Instance.quad, new Vector2(-7f, 2f), new Vector2(5f, 5f), 0f,
-                Effects.Instance.basicEffect, Textures.Instance.green));
+            Register(new Terrain(Models.Instance.quad, new Vector2(21f, -5f), new Vector2(61f, 1f), 0f,
+                Textures.Instance.rocks));
 
-            // triangles on top of a castle
-            Register(new Terrain(Models.Instance.triangle, new Vector2(-9f, 5f), new Vector2(1f, 1f), 0f,
-                Effects.Instance.basicEffect, Textures.Instance.green));
-            Register(new Terrain(Models.Instance.triangle, new Vector2(-8f, 5f), new Vector2(1f, 1f), 0f,
-                Effects.Instance.basicEffect, Textures.Instance.green));
-            Register(new Terrain(Models.Instance.triangle, new Vector2(-7f, 5f), new Vector2(1f, 1f), 0f,
-                Effects.Instance.basicEffect, Textures.Instance.green));
-            Register(new Terrain(Models.Instance.triangle, new Vector2(-6f, 5f), new Vector2(1f, 1f), 0f,
-                Effects.Instance.basicEffect, Textures.Instance.green));
-            Register(new Terrain(Models.Instance.triangle, new Vector2(-5f, 5f), new Vector2(1f, 1f), 0f,
-                Effects.Instance.basicEffect, Textures.Instance.green));
+            // castle
+            Register(new Castle(100f, new Vector2(-6f, 1f), new Vector2(3f, 6f)));
         }
     }
 }

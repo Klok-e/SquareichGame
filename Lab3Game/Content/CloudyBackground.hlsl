@@ -37,8 +37,8 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 	return output;
 }
 
-static const float cloudscale = 1.1;
-static const float speed = 0.03;
+static const float cloudscale = 0.4;
+static const float speed = 0.005;
 static const float clouddark = 0.5;
 static const float cloudlight = 0.3;
 static const float cloudcover = 0.2;

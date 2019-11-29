@@ -12,6 +12,9 @@ namespace Lab3Game.ResourceManagers
         public readonly Texture2D blue;
         public readonly Texture2D brown;
 
+        public readonly Texture2D castle;
+        public readonly Texture2D rocks;
+
         private Textures(GraphicsDevice device, ContentManager contentManager)
         {
             green = new Texture2D(device, 1, 1);
@@ -20,6 +23,9 @@ namespace Lab3Game.ResourceManagers
             blue.SetData(new[] {Color.Blue});
             brown = new Texture2D(device, 1, 1);
             brown.SetData(new[] {Color.Brown});
+
+            castle = contentManager.Load<Texture2D>("Castle");
+            rocks = contentManager.Load<Texture2D>("rocky_texture");
         }
 
         public static void Initialize(GraphicsDevice device, ContentManager contentManager)

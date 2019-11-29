@@ -11,31 +11,51 @@
         <e p="Content" t="Include">
           <e p="bin" t="Include">
             <e p="DesktopGL" t="Include">
+              <e p="Castle.xnb" t="Include" />
               <e p="CloudyBackground.xnb" t="Include" />
               <e p="Content" t="Include">
+                <e p="Castle.xnb" t="Include" />
                 <e p="CloudyBackground.xnb" t="Include" />
+                <e p="RandomSampleTexture.xnb" t="Include" />
+                <e p="rocky_tex2.xnb" t="Include" />
+                <e p="rocky_texture.xnb" t="Include" />
               </e>
+              <e p="RandomSampleTexture.xnb" t="Include" />
+              <e p="rocky_texture.xnb" t="Include" />
             </e>
           </e>
+          <e p="Castle.png" t="Include" />
           <e p="CloudyBackground.hlsl" t="Include" />
           <e p="Content.mgcb" t="Include" />
           <e p="obj" t="Include">
             <e p="DesktopGL" t="Include">
               <e p=".mgcontent" t="Include" />
               <e p=".mgstats" t="Include" />
+              <e p="Castle.mgcontent" t="Include" />
               <e p="CloudyBackground.mgcontent" t="Include" />
               <e p="Content" t="Include">
                 <e p=".mgcontent" t="Include" />
+                <e p="Castle.mgcontent" t="Include" />
                 <e p="CloudyBackground.mgcontent" t="Include" />
+                <e p="RandomSampleTexture.mgcontent" t="Include" />
+                <e p="rocky_tex2.mgcontent" t="Include" />
+                <e p="rocky_texture.mgcontent" t="Include" />
               </e>
+              <e p="RandomSampleTexture.mgcontent" t="Include" />
+              <e p="rocky_texture.mgcontent" t="Include" />
             </e>
           </e>
+          <e p="RandomSampleTexture.hlsl" t="Include" />
+          <e p="rocky_tex2.png" t="Include" />
+          <e p="rocky_texture.png" t="Include" />
         </e>
         <e p="CustomEffects" t="Include">
           <e p="CloudyBackgroundEffect.cs" t="Include" />
+          <e p="RandomSampleTextureEffect.cs" t="Include" />
         </e>
         <e p="Entities" t="Include">
           <e p="BackGround.cs" t="Include" />
+          <e p="Castle.cs" t="Include" />
           <e p="GameObject.cs" t="Include" />
           <e p="Terrain.cs" t="Include" />
         </e>
