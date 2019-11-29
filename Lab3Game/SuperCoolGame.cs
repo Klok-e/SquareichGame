@@ -23,6 +23,9 @@ namespace Lab3Game
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            _graphics.PreferredBackBufferHeight = 800;
+            _graphics.PreferredBackBufferWidth = 1200;
+            _graphics.ApplyChanges();
         }
 
         public void Register(IRenderable go)
@@ -116,10 +119,11 @@ namespace Lab3Game
         private void CreateScene()
         {
             _camera = new Camera(_graphics.GraphicsDevice, new Vector2(), 0.03f,
-                new Vector2(30f, 10f), new Vector2(-10f, -10f));
-
+                new Vector2(60f, 20f), new Vector2(-10f, -6f));
+            _camera.SetSize(_camera.CamSize);
+            
             // background
-            Register(new Background(Models.Instance.quad, new Vector2(0f, 0f), new Vector2(2f, 2f)));
+            Register(new Background(Models.Instance.quad, new Vector2(18f, 5f), new Vector2(55f, 20f)));
 
             // ground
             Register(new Terrain(Models.Instance.quad, new Vector2(21f, -5f), new Vector2(51f, 1f), 0f,
