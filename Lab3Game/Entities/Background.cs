@@ -15,15 +15,17 @@ namespace Lab3Game.Entities
         private GameObjectComponent _go;
         private MaterialComponent _mat;
 
+        public float Layer => -5f;
+
         public Background(Vector2 pos, Vector2 scale, SuperCoolGame game)
         {
-            _go = new GameObjectComponent(Models.Instance.quad, pos, scale, 0f, -5f);
+            _go = new GameObjectComponent(Models.Instance.quad, pos, scale, 0f);
             _mat = game.CreateMaterial(MaterialType.Cloud, Textures.Instance.none);
         }
 
         public void Render(GraphicsDevice device, GameTime time)
         {
-            _mat.Render(device, _go, time);
+            _mat.Render(device, _go, time, Layer);
         }
     }
 }

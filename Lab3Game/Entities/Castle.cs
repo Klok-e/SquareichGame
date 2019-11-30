@@ -17,12 +17,14 @@ namespace Lab3Game.Entities
         private PhysicsObjectComponent _po;
         private Terrain _bottom;
 
+        public float Layer => 0f;
+
         public float Health { get; private set; }
 
         public Castle(float health, Vector2 pos, Vector2 scale, SuperCoolGame game)
         {
             _top = new GameObjectComponent(Models.Instance.quad, pos + Vector2.UnitY * scale / 2f,
-                scale, 0f, 0f);
+                scale, 0f);
             _po = new PhysicsObjectComponent(game.World, _top, BodyType.Static, Category.Cat2, Category.Cat1);
             _mat = game.CreateMaterial(MaterialType.Basic, Textures.Instance.castle);
 
@@ -34,7 +36,7 @@ namespace Lab3Game.Entities
 
         public void Render(GraphicsDevice device, GameTime time)
         {
-            _mat.Render(device, _top, time);
+            _mat.Render(device, _top, time,Layer);
             _bottom.Render(device, time);
         }
     }

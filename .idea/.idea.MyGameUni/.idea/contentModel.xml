@@ -260,7 +260,15 @@
           <e p="Player.cs" t="Include" />
           <e p="Terrain.cs" t="Include" />
         </e>
+        <e p="InputHandling" t="Include">
+          <e p="Command.cs" t="Include" />
+          <e p="InputHandler.cs" t="Include" />
+          <e p="MoveCommand.cs" t="Include" />
+          <e p="RotateCommand.cs" t="Include" />
+        </e>
         <e p="Interfaces" t="Include">
+          <e p="IMovable.cs" t="Include" />
+          <e p="IPosition.cs" t="Include" />
           <e p="IPrototype.cs" t="Include" />
           <e p="IRegisterable.cs" t="Include" />
           <e p="IRenderable.cs" t="Include" />

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Lab3Game
 {
-    public class Renderer : IRenderable
+    public class Renderer
     {
         private readonly List<IRenderable> _renderables = new List<IRenderable>();
         private List<IEffectMatrices> _effectsMatrices = new List<IEffectMatrices>();
@@ -22,6 +22,15 @@ namespace Lab3Game
             if (_renderables.Contains(renderable))
                 return false;
             _renderables.Add(renderable);
+            // sort by layer
+            _renderables.Sort((x, y) =>
+            {
+                if (x.Layer > y.Layer)
+                    return 1;
+                if (x.Layer < y.Layer)
+                    return -1;
+                return 0;
+            });
             return true;
         }
 

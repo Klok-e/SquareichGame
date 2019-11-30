@@ -1,10 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Lab3Game.Interfaces;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Lab3Game.Entities
 {
     public class Camera
     {
+        public IPosition Follow { get; set; }
+
         public Vector2 CamPos { get; private set; }
         public float CamSize { get; private set; }
 

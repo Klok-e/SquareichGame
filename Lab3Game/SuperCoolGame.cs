@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Lab3Game.CustomEffects;
 using Lab3Game.Entities;
+using Lab3Game.InputHandling;
 using Lab3Game.Interfaces;
 using Lab3Game.Materials;
 using Lab3Game.Materials.Abstract;
@@ -17,7 +18,10 @@ namespace Lab3Game
     {
         private GraphicsDeviceManager _graphics;
 
-        private Camera _camera;
+        public Camera Camera { get; private set; }
+
+        public Player Player { get; private set; }
+        private InputHandler _inputHandler;
 
         private Updater _updater;
         private Renderer _renderer;
@@ -106,6 +110,9 @@ namespace Lab3Game
             var inst = Effects.Instance;
             _renderer = new Renderer(inst.basicEffect, inst.cloudsEffect, inst.randomSampleTextureEffect);
             _updater = new Updater();
+            _inputHandler = new InputHandler(this, new MoveAxis(Keys.W, Keys.S, Keys.A, Keys.D),
+                new MoveCommand(),
+                new RotateCommand());
 
             CreateScene();
         }
@@ -119,40 +126,43 @@ namespace Lab3Game
             if (keybState.IsKeyDown(Keys.Escape))
                 Exit();
 
-            var move = new Vector2(0f);
-            if (keybState.IsKeyDown(Keys.A))
-            {
-                move += -Vector2.UnitX;
-            }
+            foreach (var commands in _inputHandler.HandleInput(keybState, mouseState))
+                commands.Execute(_inputHandler, Player);
 
-            if (keybState.IsKeyDown(Keys.D))
-            {
-                move += Vector2.UnitX;
-            }
-
-            if (keybState.IsKeyDown(Keys.W))
-            {
-                move += Vector2.UnitY;
-            }
-
-            if (keybState.IsKeyDown(Keys.S))
-            {
-                move += -Vector2.UnitY;
-            }
+            //var move = new Vector2(0f);
+            //if (keybState.IsKeyDown(Keys.A))
+            //{
+            //    move += -Vector2.UnitX;
+            //}
+//
+            //if (keybState.IsKeyDown(Keys.D))
+            //{
+            //    move += Vector2.UnitX;
+            //}
+//
+            //if (keybState.IsKeyDown(Keys.W))
+            //{
+            //    move += Vector2.UnitY;
+            //}
+//
+            //if (keybState.IsKeyDown(Keys.S))
+            //{
+            //    move += -Vector2.UnitY;
+            //}
 
             var scroll = mouseState.ScrollWheelValue - _scrollValue;
             if (scroll != 0)
             {
                 //TODO: make configurable
                 const float scrollCoeff = 0.1f;
-                var newSize = _camera.CamSize * (1f + Math.Sign(-scroll) * scrollCoeff);
-                _camera.SetSize(newSize);
+                var newSize = Camera.CamSize * (1f + Math.Sign(-scroll) * scrollCoeff);
+                Camera.SetSize(newSize);
             }
 
             _scrollValue = mouseState.ScrollWheelValue;
 
             //TODO: make configurable
-            _camera.Translate(move * _camera.CamSize * 5f);
+            //Camera.Translate(move * Camera.CamSize * 5f);
 
             _updater.FixedUpdate(gameTime);
 
@@ -174,20 +184,17 @@ namespace Lab3Game
 
             _updater.Update(gameTime);
 
-            _renderer.Camera = _camera;
+            _renderer.Camera = Camera;
             _renderer.Render(device, gameTime);
 
-            base.Draw(gameTime);  
+            base.Draw(gameTime);
         }
 
         private void CreateScene()
         {
-            _camera = new Camera(_graphics.GraphicsDevice, new Vector2(), 0.03f,
+            Camera = new Camera(_graphics.GraphicsDevice, new Vector2(), 0.03f,
                 new Vector2(60f, 20f), new Vector2(-10f, -6f));
-            _camera.SetSize(_camera.CamSize);
-
-            // player
-            Register(new Player(new Vector2(0f, 0f), new Vector2(1f, 1f), 0f, this));
+            Camera.SetSize(Camera.CamSize);
 
             // background
             Register(new Background(new Vector2(18f, 5f), new Vector2(55f, 20f), this));
@@ -198,6 +205,10 @@ namespace Lab3Game
 
             // castle
             Register(new Castle(100f, new Vector2(-6f, 1f), new Vector2(3f, 6f), this));
+
+            // player
+            Player = new Player(new Vector2(0f, 0f), new Vector2(1f, 1f), 0f, this);
+            Register(Player);
         }
     }
 }

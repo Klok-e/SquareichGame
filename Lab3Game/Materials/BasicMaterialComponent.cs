@@ -15,12 +15,12 @@ namespace Lab3Game.Materials
             _texture = texture;
         }
 
-        protected override void PreRender(GameObjectComponent go, GameTime time)
+        protected override void PreRender(GameObjectComponent go, GameTime time,float layer)
         {
             var effect = (BasicEffect) Effect;
             effect.World = Matrix.CreateScale(new Vector3(go.scale, 1f)) *
                            Matrix.CreateRotationZ(go.rotation) *
-                           Matrix.CreateWorld(new Vector3(go.pos, go.layer), Vector3.Forward, Vector3.Up);
+                           Matrix.CreateWorld(new Vector3(go.pos, layer), Vector3.Forward, Vector3.Up);
             effect.Texture = _texture;
         }
     }

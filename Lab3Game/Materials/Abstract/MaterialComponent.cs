@@ -15,9 +15,9 @@ namespace Lab3Game.Materials.Abstract
         }
 
         public void Render(GraphicsDevice device, GameObjectComponent go,
-                           GameTime time)
+                           GameTime time, float layer)
         {
-            PreRender(go, time);
+            PreRender(go, time, layer);
             device.SetVertexBuffer(go.mesh.VertBuffer);
             device.Indices = go.mesh.IndBuffer;
             foreach (var pass in Effect.CurrentTechnique.Passes)
@@ -27,6 +27,6 @@ namespace Lab3Game.Materials.Abstract
             }
         }
 
-        protected abstract void PreRender(GameObjectComponent go, GameTime time);
+        protected abstract void PreRender(GameObjectComponent go, GameTime time, float layer);
     }
 }
