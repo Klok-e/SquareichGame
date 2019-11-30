@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab3Game", "Lab3Game\Lab3Game.csproj", "{6D3FAFD9-1A2C-4FEC-BAD6-5F0AF801F981}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aether.Physics2D.NetCore", "Aether.Physics2D.NetCore\Aether.Physics2D.NetCore.csproj", "{E8E72C27-5997-4700-89DB-085D8E03F14A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{6D3FAFD9-1A2C-4FEC-BAD6-5F0AF801F981}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D3FAFD9-1A2C-4FEC-BAD6-5F0AF801F981}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D3FAFD9-1A2C-4FEC-BAD6-5F0AF801F981}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8E72C27-5997-4700-89DB-085D8E03F14A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8E72C27-5997-4700-89DB-085D8E03F14A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8E72C27-5997-4700-89DB-085D8E03F14A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8E72C27-5997-4700-89DB-085D8E03F14A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

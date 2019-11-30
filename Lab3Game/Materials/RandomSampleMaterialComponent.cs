@@ -21,7 +21,7 @@ namespace Lab3Game.Materials
             var effect = (RandomSampleTextureEffect) Effect;
             effect.World = Matrix.CreateScale(new Vector3(go.scale, 1f)) *
                            Matrix.CreateRotationZ(go.rotation) *
-                           Matrix.CreateWorld(new Vector3(go.pos, 0f), Vector3.Forward, Vector3.Up);
+                           Matrix.CreateWorld(new Vector3(go.pos, go.layer), Vector3.Forward, Vector3.Up);
             effect.Texture = _texture;
         }
     }

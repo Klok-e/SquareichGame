@@ -31,6 +31,18 @@
 /processorParam:DebugMode=Auto
 /build:CloudyBackground.hlsl
 
+#begin Player.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Player.png
+
 #begin RandomSampleTexture.hlsl
 /importer:EffectImporter
 /processor:EffectProcessor

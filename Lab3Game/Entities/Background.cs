@@ -17,7 +17,7 @@ namespace Lab3Game.Entities
 
         public Background(Vector2 pos, Vector2 scale, SuperCoolGame game)
         {
-            _go = new GameObjectComponent(Models.Instance.quad, pos, scale, 0f);
+            _go = new GameObjectComponent(Models.Instance.quad, pos, scale, 0f, -5f);
             _mat = game.CreateMaterial(MaterialType.Cloud, Textures.Instance.none);
         }
 

@@ -22,8 +22,8 @@ namespace Lab3Game.Entities
         public Castle(float health, Vector2 pos, Vector2 scale, SuperCoolGame game)
         {
             _top = new GameObjectComponent(Models.Instance.quad, pos + Vector2.UnitY * scale / 2f,
-                scale, 0f);
-            _po = new PhysicsObjectComponent(_top, game.World);
+                scale, 0f, 0f);
+            _po = new PhysicsObjectComponent(game.World, _top, BodyType.Static, Category.Cat2, Category.Cat1);
             _mat = game.CreateMaterial(MaterialType.Basic, Textures.Instance.castle);
 
             _bottom = new Terrain(Models.Instance.quad,

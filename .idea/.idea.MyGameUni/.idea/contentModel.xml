@@ -5,6 +5,200 @@
     <e p="C:\Users\Dima\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_MyGameUni.733259503.00" t="ExcludeRecursive" />
     <e p="D:\Doc\PY\C#\MyGameUni" t="IncludeFlat">
       <e p=".git\info\exclude" t="IncludeRecursive" />
+      <e p="Aether.Physics2D.NetCore" t="IncludeRecursive">
+        <e p="Aether.Physics2D.NetCore.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Collision" t="Include">
+          <e p="Collision.cs" t="Include" />
+          <e p="Distance.cs" t="Include" />
+          <e p="DynamicTree.cs" t="Include" />
+          <e p="DynamicTreeBroadPhase.cs" t="Include" />
+          <e p="IBroadPhase.cs" t="Include" />
+          <e p="QuadTree.cs" t="Include" />
+          <e p="QuadTreeBroadPhase.cs" t="Include" />
+          <e p="Shapes" t="Include">
+            <e p="ChainShape.cs" t="Include" />
+            <e p="CircleShape.cs" t="Include" />
+            <e p="EdgeShape.cs" t="Include" />
+            <e p="PolygonShape.cs" t="Include" />
+            <e p="Shape.cs" t="Include" />
+          </e>
+          <e p="TimeOfImpact.cs" t="Include" />
+        </e>
+        <e p="Common" t="Include">
+          <e p="ConvexHull" t="Include">
+            <e p="ChainHull.cs" t="Include" />
+            <e p="GiftWrap.cs" t="Include" />
+            <e p="Melkman.cs" t="Include" />
+          </e>
+          <e p="Decomposition" t="Include">
+            <e p="BayazitDecomposer.cs" t="Include" />
+            <e p="CDT" t="Include">
+              <e p="Delaunay" t="Include">
+                <e p="DelaunayTriangle.cs" t="Include" />
+                <e p="Sweep" t="Include">
+                  <e p="AdvancingFront.cs" t="Include" />
+                  <e p="AdvancingFrontNode.cs" t="Include" />
+                  <e p="DTSweep.cs" t="Include" />
+                  <e p="DTSweepConstraint.cs" t="Include" />
+                  <e p="DTSweepContext.cs" t="Include" />
+                  <e p="DTSweepPointComparator.cs" t="Include" />
+                  <e p="PointOnEdgeException.cs" t="Include" />
+                </e>
+              </e>
+              <e p="ITriangulatable.cs" t="Include" />
+              <e p="Orientation.cs" t="Include" />
+              <e p="Polygon" t="Include">
+                <e p="Polygon.cs" t="Include" />
+                <e p="PolygonPoint.cs" t="Include" />
+                <e p="PolygonSet.cs" t="Include" />
+              </e>
+              <e p="Sets" t="Include">
+                <e p="ConstrainedPointSet.cs" t="Include" />
+                <e p="PointSet.cs" t="Include" />
+              </e>
+              <e p="TriangulationConstraint.cs" t="Include" />
+              <e p="TriangulationContext.cs" t="Include" />
+              <e p="TriangulationMode.cs" t="Include" />
+              <e p="TriangulationPoint.cs" t="Include" />
+              <e p="TriangulationUtil.cs" t="Include" />
+              <e p="Util" t="Include">
+                <e p="FixedArray3.cs" t="Include" />
+                <e p="FixedBitArray3.cs" t="Include" />
+                <e p="PointGenerator.cs" t="Include" />
+                <e p="PolygonGenerator.cs" t="Include" />
+              </e>
+            </e>
+            <e p="CDTDecomposer.cs" t="Include" />
+            <e p="EarclipDecomposer.cs" t="Include" />
+            <e p="FlipcodeDecomposer.cs" t="Include" />
+            <e p="Seidel" t="Include">
+              <e p="Edge.cs" t="Include" />
+              <e p="MonotoneMountain.cs" t="Include" />
+              <e p="Node.cs" t="Include" />
+              <e p="Point.cs" t="Include" />
+              <e p="QueryGraph.cs" t="Include" />
+              <e p="Sink.cs" t="Include" />
+              <e p="Trapezoid.cs" t="Include" />
+              <e p="TrapezoidalMap.cs" t="Include" />
+              <e p="Triangulator.cs" t="Include" />
+              <e p="XNode.cs" t="Include" />
+              <e p="YNode.cs" t="Include" />
+            </e>
+            <e p="SeidelDecomposer.cs" t="Include" />
+            <e p="Triangulate.cs" t="Include" />
+          </e>
+          <e p="FixedArray.cs" t="Include" />
+          <e p="LineTools.cs" t="Include" />
+          <e p="Math.cs" t="Include" />
+          <e p="Maths" t="Include">
+            <e p="Complex.cs" t="Include" />
+          </e>
+          <e p="Path.cs" t="Include" />
+          <e p="PathManager.cs" t="Include" />
+          <e p="PhysicsLogic" t="Include">
+            <e p="BreakableBody.cs" t="Include" />
+            <e p="ControllerFilter.cs" t="Include" />
+            <e p="FilterData.cs" t="Include" />
+            <e p="PhysicsLogic.cs" t="Include" />
+            <e p="RealExplosion.cs" t="Include" />
+            <e p="SimpleExplosion.cs" t="Include" />
+          </e>
+          <e p="PolygonManipulation" t="Include">
+            <e p="CuttingTools.cs" t="Include" />
+            <e p="SimpleCombiner.cs" t="Include" />
+            <e p="SimplifyTools.cs" t="Include" />
+            <e p="YuPengClipper.cs" t="Include" />
+          </e>
+          <e p="PolygonTools.cs" t="Include" />
+          <e p="Serialization.cs" t="Include" />
+          <e p="Stopwatch.cs" t="Include" />
+          <e p="TextureTools" t="Include">
+            <e p="MarchingSquares.cs" t="Include" />
+            <e p="Terrain.cs" t="Include" />
+            <e p="TextureConverter.cs" t="Include" />
+          </e>
+          <e p="Vertices.cs" t="Include" />
+        </e>
+        <e p="Content" t="Include">
+          <e p="BodyContainer.cs" t="Include" />
+          <e p="PolygonContainer.cs" t="Include" />
+        </e>
+        <e p="ContentReaders" t="Include">
+          <e p="BodyContainerReader.cs" t="Include" />
+          <e p="PolygonContainerReader.cs" t="Include" />
+        </e>
+        <e p="Controllers" t="Include">
+          <e p="AbstractForceController.cs" t="Include" />
+          <e p="BuoyancyController.cs" t="Include" />
+          <e p="Controller.cs" t="Include" />
+          <e p="GravityController.cs" t="Include" />
+          <e p="SimpleWindForce.cs" t="Include" />
+          <e p="VelocityLimitController.cs" t="Include" />
+        </e>
+        <e p="Diagnostics" t="Include">
+          <e p="DebugViewBase.cs" t="Include" />
+          <e p="DebugViewFlags.cs" t="Include" />
+        </e>
+        <e p="Dynamics" t="Include">
+          <e p="Body.cs" t="Include" />
+          <e p="Body.Factory.cs" t="Include" />
+          <e p="BodyType.cs" t="Include" />
+          <e p="Category.cs" t="Include" />
+          <e p="ContactManager.cs" t="Include" />
+          <e p="Contacts" t="Include">
+            <e p="Contact.cs" t="Include" />
+            <e p="ContactListHead.cs" t="Include" />
+            <e p="ContactSolver.cs" t="Include" />
+          </e>
+          <e p="Fixture.cs" t="Include" />
+          <e p="FixtureProxy.cs" t="Include" />
+          <e p="Island.cs" t="Include" />
+          <e p="Joints" t="Include">
+            <e p="AngleJoint.cs" t="Include" />
+            <e p="DistanceJoint.cs" t="Include" />
+            <e p="FixedMouseJoint.cs" t="Include" />
+            <e p="FrictionJoint.cs" t="Include" />
+            <e p="GearJoint.cs" t="Include" />
+            <e p="Joint.cs" t="Include" />
+            <e p="JointFactory.cs" t="Include" />
+            <e p="MotorJoint.cs" t="Include" />
+            <e p="PrismaticJoint.cs" t="Include" />
+            <e p="PulleyJoint.cs" t="Include" />
+            <e p="RevoluteJoint.cs" t="Include" />
+            <e p="RopeJoint.cs" t="Include" />
+            <e p="WeldJoint.cs" t="Include" />
+            <e p="WheelJoint.cs" t="Include" />
+          </e>
+          <e p="SolverIterations.cs" t="Include" />
+          <e p="TimeStep.cs" t="Include" />
+          <e p="World.cs" t="Include" />
+          <e p="World.Factory.cs" t="Include" />
+          <e p="WorldCallbacks.cs" t="Include" />
+        </e>
+        <e p="Fluids" t="Include">
+          <e p="1" t="Include">
+            <e p="FluidDefinition.cs" t="Include" />
+            <e p="FluidParticle.cs" t="Include" />
+            <e p="FluidSystem1.cs" t="Include" />
+            <e p="HashGrid.cs" t="Include" />
+            <e p="Spring.cs" t="Include" />
+            <e p="SpringHash.cs" t="Include" />
+          </e>
+          <e p="2" t="Include">
+            <e p="FluidSystem2.cs" t="Include" />
+            <e p="SpartialTable.cs" t="Include" />
+          </e>
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.0" t="Include">
+              <e p="Aether.Physics2D.NetCore.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Settings.cs" t="Include" />
+      </e>
       <e p="Lab3Game" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
         <e p="Components" t="Include">
@@ -19,11 +213,14 @@
               <e p="Content" t="Include">
                 <e p="Castle.xnb" t="Include" />
                 <e p="CloudyBackground.xnb" t="Include" />
+                <e p="Player.xnb" t="Include" />
                 <e p="RandomSampleTexture.xnb" t="Include" />
                 <e p="rocky_tex2.xnb" t="Include" />
                 <e p="rocky_texture.xnb" t="Include" />
               </e>
+              <e p="Player.xnb" t="Include" />
               <e p="RandomSampleTexture.xnb" t="Include" />
+              <e p="rocky_tex2.xnb" t="Include" />
               <e p="rocky_texture.xnb" t="Include" />
             </e>
           </e>
@@ -40,11 +237,14 @@
                 <e p=".mgcontent" t="Include" />
                 <e p="Castle.mgcontent" t="Include" />
                 <e p="CloudyBackground.mgcontent" t="Include" />
+                <e p="Player.mgcontent" t="Include" />
                 <e p="RandomSampleTexture.mgcontent" t="Include" />
                 <e p="rocky_tex2.mgcontent" t="Include" />
                 <e p="rocky_texture.mgcontent" t="Include" />
               </e>
+              <e p="Player.mgcontent" t="Include" />
               <e p="RandomSampleTexture.mgcontent" t="Include" />
+              <e p="rocky_tex2.mgcontent" t="Include" />
               <e p="rocky_texture.mgcontent" t="Include" />
             </e>
           </e>

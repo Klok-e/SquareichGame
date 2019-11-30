@@ -19,8 +19,8 @@ namespace Lab3Game.Entities
         public Terrain(Mesh<VertexPositionTexture> mesh, Vector2 pos, Vector2 scale, float rotation,
                        Texture2D texture, SuperCoolGame game)
         {
-            _go = new GameObjectComponent(mesh, pos, scale, rotation);
-            _po = new PhysicsObjectComponent(_go, game.World);
+            _go = new GameObjectComponent(mesh, pos, scale, rotation, 0f);
+            _po = new PhysicsObjectComponent(game.World, _go, BodyType.Static, Category.Cat2, Category.Cat1);
             _mat = game.CreateMaterial(MaterialType.RandomSample, texture);
         }
 

@@ -35,15 +35,38 @@ namespace Lab3Game
             _graphics.ApplyChanges();
         }
 
+        private void Register<T>(T go) where T : IUpdatable, IRenderable
+        {
+            Register((IUpdatable) go);
+            Register((IRenderable) go);
+        }
+
+        private void Register(IUpdatable go)
+        {
+            _updater.Register(go);
+        }
+
         private void Register(IRenderable go)
         {
             _renderer.Register(go);
+        }
+
+        private void Unregister<T>(T go) where T : IUpdatable, IRenderable
+        {
+            Unregister((IUpdatable) go);
+            Unregister((IRenderable) go);
+        }
+
+        private void Unregister(IUpdatable go)
+        {
+            _updater.Unregister(go);
         }
 
         private void Unregister(IRenderable go)
         {
             _renderer.Unregister(go);
         }
+
 
         public MaterialComponent CreateMaterial(MaterialType materialType, Texture2D texture)
         {
@@ -154,7 +177,7 @@ namespace Lab3Game
             _renderer.Camera = _camera;
             _renderer.Render(device, gameTime);
 
-            base.Draw(gameTime);
+            base.Draw(gameTime);  
         }
 
         private void CreateScene()
@@ -162,6 +185,9 @@ namespace Lab3Game
             _camera = new Camera(_graphics.GraphicsDevice, new Vector2(), 0.03f,
                 new Vector2(60f, 20f), new Vector2(-10f, -6f));
             _camera.SetSize(_camera.CamSize);
+
+            // player
+            Register(new Player(new Vector2(0f, 0f), new Vector2(1f, 1f), 0f, this));
 
             // background
             Register(new Background(new Vector2(18f, 5f), new Vector2(55f, 20f), this));
