@@ -1,5 +1,7 @@
 ﻿using Lab3Game.CustomEffects;
 using Lab3Game.Interfaces;
+using Lab3Game.Materials;
+using Lab3Game.Materials.Abstract;
 using Lab3Game.ResourceManagers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

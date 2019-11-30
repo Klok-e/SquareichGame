@@ -48,10 +48,6 @@
           <e p="rocky_tex2.png" t="Include" />
           <e p="rocky_texture.png" t="Include" />
         </e>
-        <e p="CustomEffects" t="Include">
-          <e p="CloudyBackgroundEffect.cs" t="Include" />
-          <e p="RandomSampleTextureEffect.cs" t="Include" />
-        </e>
         <e p="Entities" t="Include">
           <e p="BackGround.cs" t="Include" />
           <e p="Camera.cs" t="Include" />
@@ -67,6 +63,18 @@
           <e p="IUpdatable.cs" t="Include" />
         </e>
         <e p="Lab3Game.csproj" t="IncludeRecursive" />
+        <e p="Materials" t="Include">
+          <e p="Abstract" t="Include">
+            <e p="MaterialComponent.cs" t="Include" />
+          </e>
+          <e p="BasicMaterialComponent.cs" t="Include" />
+          <e p="CloudMaterialComponent.cs" t="Include" />
+          <e p="CustomEffects" t="Include">
+            <e p="CloudyBackgroundEffect.cs" t="Include" />
+            <e p="RandomSampleTextureEffect.cs" t="Include" />
+          </e>
+          <e p="RandomSampleMaterialComponent.cs" t="Include" />
+        </e>
         <e p="Mesh.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
