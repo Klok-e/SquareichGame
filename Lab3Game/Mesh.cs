@@ -12,6 +12,8 @@ namespace Lab3Game
         private readonly List<short> _indices = new List<short>();
         private bool _buffersChanged = true;
 
+        public IReadOnlyList<T> Vertices => _vertices;
+
         public VertexBuffer VertBuffer
         {
             get
@@ -64,6 +66,13 @@ namespace Lab3Game
         {
             _buffersChanged = true;
             _indices.Add(ind);
+        }
+
+        public void Clear()
+        {
+            _buffersChanged = true;
+            _indices.Clear();
+            _vertices.Clear();
         }
 
         private void SetUpBuffers()

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Lab3Game.Entities;
 using Lab3Game.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

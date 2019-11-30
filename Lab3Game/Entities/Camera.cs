@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Lab3Game
+namespace Lab3Game.Entities
 {
     public class Camera
     {

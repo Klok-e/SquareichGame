@@ -1,14 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using Lab3Game.CustomEffects;
 using Lab3Game.Entities;
 using Lab3Game.Interfaces;
 using Lab3Game.ResourceManagers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Lab3Game
 {
+    public enum MaterialType
+    {
+        Invalid = 0,
+        Cloud = 1,
+        RandomSample = 2,
+        Basic = 3,
+    }
+
     public class SuperCoolGame : Game
     {
         private GraphicsDeviceManager _graphics;
@@ -16,7 +26,9 @@ namespace Lab3Game
         private Camera _camera;
 
         private Renderer _renderer;
-        private int scrollValue;
+        private int _scrollValue;
+
+        private World _world;
 
         public SuperCoolGame()
         {
@@ -28,18 +40,42 @@ namespace Lab3Game
             _graphics.ApplyChanges();
         }
 
-        public void Register(IRenderable go)
+        private void Register(IRenderable go)
         {
             _renderer.Register(go);
         }
 
-        public void Unregister(IRenderable go)
+        private void Unregister(IRenderable go)
         {
             _renderer.Unregister(go);
         }
 
+        public MaterialComponent CreateMaterial(MaterialType materialType, Texture2D texture)
+        {
+            MaterialComponent mat;
+            switch (materialType)
+            {
+                case MaterialType.Invalid:
+                    throw new Exception();
+                case MaterialType.Basic:
+                    mat = new BasicMaterialComponent(Effects.Instance.basicEffect, texture);
+                    break;
+                case MaterialType.Cloud:
+                    mat = new CloudMaterialComponent(Effects.Instance.cloudsEffect);
+                    break;
+                case MaterialType.RandomSample:
+                    mat = new RandomSampleMaterialComponent(Effects.Instance.randomSampleTextureEffect, texture);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(materialType), materialType, null);
+            }
+
+            return mat;
+        }
+
         protected override void Initialize()
         {
+            _world = new World();
             base.Initialize();
         }
 
@@ -85,7 +121,7 @@ namespace Lab3Game
                 move += -Vector2.UnitY;
             }
 
-            var scroll = mouseState.ScrollWheelValue - scrollValue;
+            var scroll = mouseState.ScrollWheelValue - _scrollValue;
             if (scroll != 0)
             {
                 //TODO: make configurable
@@ -94,11 +130,12 @@ namespace Lab3Game
                 _camera.SetSize(newSize);
             }
 
-            scrollValue = mouseState.ScrollWheelValue;
+            _scrollValue = mouseState.ScrollWheelValue;
 
             //TODO: make configurable
             _camera.Translate(move * _camera.CamSize * 5f);
 
+            //_world.Step((float) gameTime.ElapsedGameTime.TotalSeconds);
             base.Update(gameTime);
         }
 
@@ -123,14 +160,14 @@ namespace Lab3Game
             _camera.SetSize(_camera.CamSize);
 
             // background
-            Register(new Background(new Vector2(18f, 5f), new Vector2(55f, 20f)));
+            Register(new Background(new Vector2(18f, 5f), new Vector2(55f, 20f), this));
 
             // ground
             Register(new Terrain(Models.Instance.quad, new Vector2(21f, -5f), new Vector2(61f, 1f), 0f,
-                Textures.Instance.rocks));
+                Textures.Instance.rocks, _world, this));
 
             // castle
-            Register(new Castle(100f, new Vector2(-6f, 1f), new Vector2(3f, 6f)));
+            Register(new Castle(100f, new Vector2(-6f, 1f), new Vector2(3f, 6f), _world, this));
         }
     }
 }
