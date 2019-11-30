@@ -7,6 +7,10 @@
       <e p=".git\info\exclude" t="IncludeRecursive" />
       <e p="Lab3Game" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
+        <e p="Components" t="Include">
+          <e p="GameObject.cs" t="Include" />
+          <e p="PhysicsObject.cs" t="Include" />
+        </e>
         <e p="Content" t="Include">
           <e p="bin" t="Include">
             <e p="DesktopGL" t="Include">
@@ -44,6 +48,7 @@
               <e p="rocky_texture.mgcontent" t="Include" />
             </e>
           </e>
+          <e p="Player.png" t="Include" />
           <e p="RandomSampleTexture.hlsl" t="Include" />
           <e p="rocky_tex2.png" t="Include" />
           <e p="rocky_texture.png" t="Include" />
@@ -52,12 +57,11 @@
           <e p="BackGround.cs" t="Include" />
           <e p="Camera.cs" t="Include" />
           <e p="Castle.cs" t="Include" />
-          <e p="GameObject.cs" t="Include" />
-          <e p="PhysicsObject.cs" t="Include" />
           <e p="Player.cs" t="Include" />
           <e p="Terrain.cs" t="Include" />
         </e>
         <e p="Interfaces" t="Include">
+          <e p="IPrototype.cs" t="Include" />
           <e p="IRegisterable.cs" t="Include" />
           <e p="IRenderable.cs" t="Include" />
           <e p="IUpdatable.cs" t="Include" />
@@ -73,6 +77,7 @@
             <e p="CloudyBackgroundEffect.cs" t="Include" />
             <e p="RandomSampleTextureEffect.cs" t="Include" />
           </e>
+          <e p="MaterialType.cs" t="Include" />
           <e p="RandomSampleMaterialComponent.cs" t="Include" />
         </e>
         <e p="Mesh.cs" t="Include" />
@@ -92,6 +97,7 @@
         </e>
         <e p="SuperCoolGame.cs" t="Include" />
         <e p="Ticker.cs" t="Include" />
+        <e p="Updater.cs" t="Include" />
       </e>
       <e p="MyGameUni.sln" t="IncludeFlat" />
       <e p="packages" t="ExcludeRecursive" />

@@ -1,4 +1,5 @@
-﻿using Lab3Game.CustomEffects;
+﻿using Lab3Game.Components;
+using Lab3Game.CustomEffects;
 using Lab3Game.Entities;
 using Lab3Game.Materials.Abstract;
 using Microsoft.Xna.Framework;

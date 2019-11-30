@@ -6,10 +6,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Lab3Game
 {
-    public class Renderer
+    public class Renderer : IRenderable
     {
         private readonly List<IRenderable> _renderables = new List<IRenderable>();
         private List<IEffectMatrices> _effectsMatrices = new List<IEffectMatrices>();
+        public Camera Camera { get; set; }
 
         public Renderer(params IEffectMatrices[] effects)
         {
@@ -32,10 +33,10 @@ namespace Lab3Game
             return true;
         }
 
-        public void RenderAll(GraphicsDevice device, GameTime time, Camera camera)
+        public void Render(GraphicsDevice device, GameTime time)
         {
-            var view = camera.GetView();
-            var projection = camera.GetProjection();
+            var view = Camera.GetView();
+            var projection = Camera.GetProjection();
             foreach (var effect in _effectsMatrices)
             {
                 effect.View = view;

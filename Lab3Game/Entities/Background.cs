@@ -1,4 +1,5 @@
-﻿using Lab3Game.CustomEffects;
+﻿using Lab3Game.Components;
+using Lab3Game.CustomEffects;
 using Lab3Game.Interfaces;
 using Lab3Game.Materials;
 using Lab3Game.Materials.Abstract;
@@ -22,11 +23,6 @@ namespace Lab3Game.Entities
 
         public void Render(GraphicsDevice device, GameTime time)
         {
-            //_go.effect.World = Matrix.CreateScale(new Vector3(_go.scale, 1f)) *
-            //                   Matrix.CreateRotationZ(_go.rotation) *
-            //                   Matrix.CreateWorld(new Vector3(_go.pos, -5f), Vector3.Forward, Vector3.Up);
-            //_go.effect.TimeFromStart = (float) time.TotalGameTime.TotalSeconds;
-            //_go.Render(device);
             _mat.Render(device, _go, time);
         }
     }

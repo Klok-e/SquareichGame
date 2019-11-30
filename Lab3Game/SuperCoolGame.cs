@@ -13,24 +13,17 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Lab3Game
 {
-    public enum MaterialType
-    {
-        Invalid = 0,
-        Cloud = 1,
-        RandomSample = 2,
-        Basic = 3,
-    }
-
     public class SuperCoolGame : Game
     {
         private GraphicsDeviceManager _graphics;
 
         private Camera _camera;
 
+        private Updater _updater;
         private Renderer _renderer;
         private int _scrollValue;
 
-        private World _world;
+        public World World { get; private set; }
 
         public SuperCoolGame()
         {
@@ -77,7 +70,7 @@ namespace Lab3Game
 
         protected override void Initialize()
         {
-            _world = new World();
+            World = new World();
             base.Initialize();
         }
 
@@ -89,6 +82,7 @@ namespace Lab3Game
 
             var inst = Effects.Instance;
             _renderer = new Renderer(inst.basicEffect, inst.cloudsEffect, inst.randomSampleTextureEffect);
+            _updater = new Updater();
 
             CreateScene();
         }
@@ -137,7 +131,12 @@ namespace Lab3Game
             //TODO: make configurable
             _camera.Translate(move * _camera.CamSize * 5f);
 
-            //_world.Step((float) gameTime.ElapsedGameTime.TotalSeconds);
+            _updater.FixedUpdate(gameTime);
+
+            World.Step((float) gameTime.ElapsedGameTime.TotalSeconds);
+
+            _updater.LateFixedUpdate(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -150,7 +149,10 @@ namespace Lab3Game
             var rasterizerState = new RasterizerState {CullMode = CullMode.CullCounterClockwiseFace};
             device.RasterizerState = rasterizerState;
 
-            _renderer.RenderAll(device, gameTime, _camera);
+            _updater.Update(gameTime);
+
+            _renderer.Camera = _camera;
+            _renderer.Render(device, gameTime);
 
             base.Draw(gameTime);
         }
@@ -166,10 +168,10 @@ namespace Lab3Game
 
             // ground
             Register(new Terrain(Models.Instance.quad, new Vector2(21f, -5f), new Vector2(61f, 1f), 0f,
-                Textures.Instance.rocks, _world, this));
+                Textures.Instance.rocks, this));
 
             // castle
-            Register(new Castle(100f, new Vector2(-6f, 1f), new Vector2(3f, 6f), _world, this));
+            Register(new Castle(100f, new Vector2(-6f, 1f), new Vector2(3f, 6f), this));
         }
     }
 }

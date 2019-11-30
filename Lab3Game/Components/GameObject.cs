@@ -1,11 +1,7 @@
-﻿using Lab3Game.CustomEffects;
-using Lab3Game.Interfaces;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using tainicom.Aether.Physics2D.Common;
-using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Lab3Game.Entities
+namespace Lab3Game.Components
 {
     public class GameObjectComponent
     {

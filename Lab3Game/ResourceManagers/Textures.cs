@@ -15,6 +15,7 @@ namespace Lab3Game.ResourceManagers
 
         public readonly Texture2D castle;
         public readonly Texture2D rocks;
+        public readonly Texture2D player;
 
         private Textures(GraphicsDevice device, ContentManager contentManager)
         {
@@ -29,6 +30,7 @@ namespace Lab3Game.ResourceManagers
 
             castle = contentManager.Load<Texture2D>("Castle");
             rocks = contentManager.Load<Texture2D>("rocky_texture");
+            player = contentManager.Load<Texture2D>("Player");
         }
 
         public static void Initialize(GraphicsDevice device, ContentManager contentManager)
