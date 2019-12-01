@@ -49,6 +49,21 @@ namespace Lab3Game.Voxels
             CleanDirty();
         }
 
+        public void Explode(Vector2 pos, float radius)
+        {
+        }
+
+        public void Fill(Vector2 pos, float radius)
+        {
+        }
+
+        public void SetVoxelWithPos(int x, int y, float value)
+        {
+            var chunkPos = ((int) MathF.Floor((float) x / _chunkSize), (int) MathF.Floor((float) y / _chunkSize));
+            if (_chunks.ContainsKey(chunkPos))
+                _chunks[chunkPos].Data[x - chunkPos.Item1 * _chunkSize, y - chunkPos.Item2 * _chunkSize] = value;
+        }
+
         public float GetVoxelWithPos(int x, int y)
         {
             var chunkPos = ((int) MathF.Floor((float) x / _chunkSize), (int) MathF.Floor((float) y / _chunkSize));
