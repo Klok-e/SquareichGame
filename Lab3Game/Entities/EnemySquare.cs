@@ -21,12 +21,13 @@ namespace Lab3Game.Entities
         private Texture2D _tex;
         private string _bulletName;
 
+        private const double shootRandomizeMult = 0.5f;
         private double _lastShotTime;
         private const float bulletSpawnDistance = 2f;
         private const float bulletForce = 20f;
-        private const double shootTimeOut = 1f;
+        private const double shootTimeOut = 2f;
         private const float moveForceMult = 10f;
-        private const float torque = 2f;
+        private const float torque = 1f;
 
         public float Layer { get; }
 
@@ -43,6 +44,15 @@ namespace Lab3Game.Entities
             _bulletName = bulletName;
             Health = health;
             _tex = texture;
+            _po.Body.OnCollision += (sender, other, coll) =>
+            {
+                if (other.Body.Tag is Castle castle)
+                {
+                    castle.GetDamage(20f);
+                }
+
+                return true;
+            };
         }
 
         public void Activate()
@@ -67,7 +77,7 @@ namespace Lab3Game.Entities
             bullet.ApplyForce(dir * bulletForce);
             bullet.SetVelocity(_po.Body.LinearVelocity);
             _game.Register(bullet);
-            
+
             void OnBulletHit()
             {
                 if (bullet.IsExploded)
@@ -78,7 +88,8 @@ namespace Lab3Game.Entities
 
             bullet.OnHit += OnBulletHit;
 
-            _lastShotTime = _game.CurrentFixedTime;
+            // randomize
+            _lastShotTime = _game.CurrentFixedTime + (_game.Random.NextDouble() - 0.5d) * shootRandomizeMult;
         }
 
         public void Render(GraphicsDevice device, GameTime time)
@@ -91,7 +102,7 @@ namespace Lab3Game.Entities
             _deactivator.DeactivateAll(_game);
             Shoot(_game.Player.Position);
 
-            _po.Body.ApplyForce(new Vector2(-1f, 0f) * moveForceMult);
+            _po.Body.ApplyForce(new Vector2(-1f, 0.5f) * moveForceMult);
             _po.Body.ApplyTorque(torque);
         }
 

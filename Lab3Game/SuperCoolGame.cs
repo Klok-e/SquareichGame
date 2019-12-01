@@ -247,7 +247,7 @@ namespace Lab3Game
 
 
             Camera = new Camera(_graphics.GraphicsDevice, new Vector2(), 0.03f,
-                new Vector2(60f, 20f), new Vector2(-10f, -6f));
+                new Vector2(45.5f, 15f), new Vector2(-9f, -5f));
             Camera.SetSize(Camera.CamSize);
 
             Register(Camera);
