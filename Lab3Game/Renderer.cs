@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Lab3Game.Entities;
 using Lab3Game.Interfaces;
 using Microsoft.Xna.Framework;
@@ -8,7 +9,9 @@ namespace Lab3Game
 {
     public class Renderer
     {
-        private readonly List<IRenderable> _renderables = new List<IRenderable>();
+        private readonly HashSet<IRenderable> _renderables = new HashSet<IRenderable>();
+        private readonly HashSet<IRenderable> _toAdd = new HashSet<IRenderable>();
+        private readonly HashSet<IRenderable> _toRemove = new HashSet<IRenderable>();
         private List<IEffectMatrices> _effectsMatrices = new List<IEffectMatrices>();
         public Camera Camera { get; set; }
 
@@ -21,16 +24,7 @@ namespace Lab3Game
         {
             if (_renderables.Contains(renderable))
                 return false;
-            _renderables.Add(renderable);
-            // sort by layer
-            _renderables.Sort((x, y) =>
-            {
-                if (x.Layer > y.Layer)
-                    return 1;
-                if (x.Layer < y.Layer)
-                    return -1;
-                return 0;
-            });
+            _toAdd.Add(renderable);
             return true;
         }
 
@@ -38,12 +32,19 @@ namespace Lab3Game
         {
             if (!_renderables.Contains(renderable))
                 return false;
-            _renderables.Remove(renderable);
+            _toRemove.Add(renderable);
             return true;
         }
 
         public void Render(GraphicsDevice device, GameTime time)
         {
+            foreach (var add in _toAdd)
+                _renderables.Add(add);
+            _toAdd.Clear();
+            foreach (var add in _toRemove)
+                _renderables.Remove(add);
+            _toRemove.Clear();
+            
             var view = Camera.GetView();
             var projection = Camera.GetProjection();
             foreach (var effect in _effectsMatrices)
@@ -52,8 +53,18 @@ namespace Lab3Game
                 effect.Projection = projection;
             }
 
+            var lst = _renderables.ToList();
+            lst.Sort((x, y) =>
+            {
+                if (x.Layer > y.Layer)
+                    return 1;
+                if (x.Layer < y.Layer)
+                    return -1;
+                return 0;
+            });
+
             // draw all the stuff
-            foreach (var renderable in _renderables)
+            foreach (var renderable in lst)
                 renderable.Render(device, time);
         }
     }

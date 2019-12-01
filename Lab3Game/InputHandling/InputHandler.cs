@@ -63,7 +63,9 @@ namespace Lab3Game.InputHandling
         private (MoveAxis axis, ICommand command) _move;
         private ICommand _mouseMove;
 
-        private KeyboardState _keyboardStatePrev;
+        private Keys _shootKey;
+        private ICommand _shootCommand;
+
         private MouseState _mouseStatePrev;
         private KeyboardState _keyboardState;
         private MouseState _mouseState;
@@ -74,11 +76,14 @@ namespace Lab3Game.InputHandling
             Move = 1,
         }
 
-        public InputHandler(SuperCoolGame game, MoveAxis move, ICommand moveCommand, ICommand mouseMove)
+        public InputHandler(SuperCoolGame game, MoveAxis move, ICommand moveCommand, ICommand mouseMove,
+                            Keys shootKey, ICommand shootCommand)
         {
             _move = (move, moveCommand);
             _game = game;
             _mouseMove = mouseMove;
+            _shootKey = shootKey;
+            _shootCommand = shootCommand;
         }
 
         public Vector2 GetAxis(Axes axes)
@@ -94,9 +99,9 @@ namespace Lab3Game.InputHandling
             }
         }
 
-        public Vector2 GetMousePos()
+        public Vector2 GetMousePos(MouseState mouseState)
         {
-            var screenPos = _mouseState.Position.ToVector2();
+            var screenPos = mouseState.Position.ToVector2();
 
             var (_, _, w, h) = _game.GraphicsDevice.Viewport.Bounds;
 
@@ -106,9 +111,14 @@ namespace Lab3Game.InputHandling
 
             //Console.WriteLine($"screen {screenPos}");
             var world = Vector2.Transform(screenPos,
-                Matrix.Invert(_game.Camera.GetView()) * Matrix.Invert(_game.Camera.GetProjection()));
+                Matrix.Invert(_game.Camera.GetProjection()) * Matrix.Invert(_game.Camera.GetView()));
             //Console.WriteLine($"world {world}");
             return world;
+        }
+
+        public Vector2 GetMousePos()
+        {
+            return GetMousePos(_mouseState);
         }
 
         public ICommand[] HandleInput(KeyboardState keyboard, MouseState mouse)
@@ -119,10 +129,11 @@ namespace Lab3Game.InputHandling
             var commands = new List<ICommand>();
             if (_move.axis.IsPressed(keyboard))
                 commands.Add(_move.command);
-            //if (_mouseState.Position != _mouseStatePrev.Position)
             commands.Add(_mouseMove);
+            if (keyboard.IsKeyDown(_shootKey))
+                commands.Add(_shootCommand);
 
-            _keyboardStatePrev = _keyboardState;
+            //_keyboardStatePrev = _keyboardState;
             _mouseStatePrev = _mouseState;
 
             return commands.ToArray();

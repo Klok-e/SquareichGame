@@ -5,6 +5,6 @@ namespace Lab3Game.InputHandling
 {
     public interface ICommand
     {
-        void Execute(InputHandler handler, IMovable actor);
+        void Execute(InputHandler handler, IControllable actor);
     }
 }

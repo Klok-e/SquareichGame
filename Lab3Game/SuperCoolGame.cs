@@ -21,13 +21,23 @@ namespace Lab3Game
         public Camera Camera { get; private set; }
 
         public Player Player { get; private set; }
-        private InputHandler _inputHandler;
 
         private Updater _updater;
         private Renderer _renderer;
         private int _scrollValue;
 
+        public Random Random { get; } = new Random();
+
+        public PrototypeManager<Bullet> BulletManager { get; } = new PrototypeManager<Bullet>(false);
+        public PrototypeManager<EnemySquare> EnemyManager { get; } = new PrototypeManager<EnemySquare>(false);
+
         public World World { get; private set; }
+
+        private readonly List<(Action action, double expirationTime)> _timeouts = new List<(Action, double)>();
+
+        public double CurrentFixedTime { get; private set; }
+        public MouseState CurrentMouseState { get; private set; }
+        public KeyboardState CurrentKeyboardState { get; private set; }
 
         public SuperCoolGame()
         {
@@ -39,34 +49,39 @@ namespace Lab3Game
             _graphics.ApplyChanges();
         }
 
-        private void Register<T>(T go) where T : IUpdatable, IRenderable
+        public void SetTimeout(Action action, double callIn)
+        {
+            _timeouts.Add((action, callIn + CurrentFixedTime));
+        }
+
+        public void Register<T>(T go) where T : IUpdatable, IRenderable
         {
             Register((IUpdatable) go);
             Register((IRenderable) go);
         }
 
-        private void Register(IUpdatable go)
+        public void Register(IUpdatable go)
         {
             _updater.Register(go);
         }
 
-        private void Register(IRenderable go)
+        public void Register(IRenderable go)
         {
             _renderer.Register(go);
         }
 
-        private void Unregister<T>(T go) where T : IUpdatable, IRenderable
+        public void Unregister<T>(T go) where T : IUpdatable, IRenderable
         {
             Unregister((IUpdatable) go);
             Unregister((IRenderable) go);
         }
 
-        private void Unregister(IUpdatable go)
+        public void Unregister(IUpdatable go)
         {
             _updater.Unregister(go);
         }
 
-        private void Unregister(IRenderable go)
+        public void Unregister(IRenderable go)
         {
             _renderer.Unregister(go);
         }
@@ -98,6 +113,7 @@ namespace Lab3Game
         protected override void Initialize()
         {
             World = new World();
+            _updater = new Updater();
             base.Initialize();
         }
 
@@ -109,10 +125,6 @@ namespace Lab3Game
 
             var inst = Effects.Instance;
             _renderer = new Renderer(inst.basicEffect, inst.cloudsEffect, inst.randomSampleTextureEffect);
-            _updater = new Updater();
-            _inputHandler = new InputHandler(this, new MoveAxis(Keys.W, Keys.S, Keys.A, Keys.D),
-                new MoveCommand(),
-                new RotateCommand());
 
             CreateScene();
         }
@@ -120,37 +132,23 @@ namespace Lab3Game
         protected override void Update(GameTime gameTime)
         {
             if (!IsActive) return;
-            var keybState = Keyboard.GetState();
-            var mouseState = Mouse.GetState();
-
-            if (keybState.IsKeyDown(Keys.Escape))
+            CurrentKeyboardState = Keyboard.GetState();
+            CurrentMouseState = Mouse.GetState();
+            if (CurrentKeyboardState.IsKeyDown(Keys.Escape))
                 Exit();
 
-            foreach (var commands in _inputHandler.HandleInput(keybState, mouseState))
-                commands.Execute(_inputHandler, Player);
+            CurrentFixedTime = gameTime.TotalGameTime.TotalSeconds;
+            for (var i = _timeouts.Count - 1; i >= 0; i--)
+            {
+                var timeout = _timeouts[i];
+                // if not expired
+                if (timeout.expirationTime >= CurrentFixedTime) continue;
+                timeout.action();
+                _timeouts.RemoveAt(i);
+            }
 
-            //var move = new Vector2(0f);
-            //if (keybState.IsKeyDown(Keys.A))
-            //{
-            //    move += -Vector2.UnitX;
-            //}
-//
-            //if (keybState.IsKeyDown(Keys.D))
-            //{
-            //    move += Vector2.UnitX;
-            //}
-//
-            //if (keybState.IsKeyDown(Keys.W))
-            //{
-            //    move += Vector2.UnitY;
-            //}
-//
-            //if (keybState.IsKeyDown(Keys.S))
-            //{
-            //    move += -Vector2.UnitY;
-            //}
 
-            var scroll = mouseState.ScrollWheelValue - _scrollValue;
+            var scroll = CurrentMouseState.ScrollWheelValue - _scrollValue;
             if (scroll != 0)
             {
                 //TODO: make configurable
@@ -159,7 +157,7 @@ namespace Lab3Game
                 Camera.SetSize(newSize);
             }
 
-            _scrollValue = mouseState.ScrollWheelValue;
+            _scrollValue = CurrentMouseState.ScrollWheelValue;
 
             //TODO: make configurable
             //Camera.Translate(move * Camera.CamSize * 5f);
@@ -196,6 +194,8 @@ namespace Lab3Game
                 new Vector2(60f, 20f), new Vector2(-10f, -6f));
             Camera.SetSize(Camera.CamSize);
 
+            Register(Camera);
+
             // background
             Register(new Background(new Vector2(18f, 5f), new Vector2(55f, 20f), this));
 
@@ -207,8 +207,52 @@ namespace Lab3Game
             Register(new Castle(100f, new Vector2(-6f, 1f), new Vector2(3f, 6f), this));
 
             // player
-            Player = new Player(new Vector2(0f, 0f), new Vector2(1f, 1f), 0f, this);
+            Player = new Player(new Vector2(0f, 0f), new Vector2(1f, 1f), 0f, this, 100f);
             Register(Player);
+
+            // invisible borders
+
+            // left
+            Register(new Terrain(Models.Instance.quad, new Vector2(-10f, 5f),
+                new Vector2(1f, 20f), 0f, Textures.Instance.transparent, this));
+
+            // up
+            Register(new Terrain(Models.Instance.quad, new Vector2(19f, 15.5f),
+                new Vector2(60f, 1f), 0f, Textures.Instance.transparent, this));
+
+            // right
+            Register(new Terrain(Models.Instance.quad, new Vector2(46f, 5f),
+                new Vector2(1f, 20f), 0f, Textures.Instance.transparent, this));
+
+            Camera.Follow = Player;
+
+            var scale = new Vector2(0.2f, 0.2f);
+            var triangleBullet = new Bullet(scale, Textures.Instance.player, this);
+            triangleBullet.Deactivate();
+            var square1Bullet = new Bullet(scale, Textures.Instance.squareBlue, this);
+            square1Bullet.Deactivate();
+            var square2Bullet = new Bullet(scale, Textures.Instance.squareRed, this);
+            square2Bullet.Deactivate();
+
+            BulletManager.AddPrototype("triangle", triangleBullet);
+            BulletManager.AddPrototype("squareBlue", square1Bullet);
+            BulletManager.AddPrototype("squareRed", square2Bullet);
+
+            var spawnPoint = new Vector2(43f, 0f);
+            var regularSquare = new EnemySquare(this, "squareRed", 20f, Textures.Instance.squareRed,
+                spawnPoint, new Vector2(1f), 0f);
+            regularSquare.Deactivate();
+            var powerfulSquare = new EnemySquare(this, "squareBlue", 50f, Textures.Instance.squareBlue,
+                spawnPoint, new Vector2(1f), 0f);
+            powerfulSquare.Deactivate();
+            //Register(regularSquare);
+            //Register(powerfulSquare);
+
+            EnemyManager.AddPrototype("regular", regularSquare);
+            EnemyManager.AddPrototype("powerful", powerfulSquare);
+            
+            // to spawn enemies
+            //Register(new EnemySpawner(this));
         }
     }
 }

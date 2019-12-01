@@ -201,6 +201,7 @@
       </e>
       <e p="Lab3Game" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
+        <e p="BulletDeactivator.cs" t="Include" />
         <e p="Components" t="Include">
           <e p="GameObject.cs" t="Include" />
           <e p="PhysicsObject.cs" t="Include" />
@@ -213,10 +214,13 @@
               <e p="Content" t="Include">
                 <e p="Castle.xnb" t="Include" />
                 <e p="CloudyBackground.xnb" t="Include" />
+                <e p="explosion 3.xnb" t="Include" />
                 <e p="Player.xnb" t="Include" />
                 <e p="RandomSampleTexture.xnb" t="Include" />
                 <e p="rocky_tex2.xnb" t="Include" />
                 <e p="rocky_texture.xnb" t="Include" />
+                <e p="SquareBlue.xnb" t="Include" />
+                <e p="SquareRed.xnb" t="Include" />
               </e>
               <e p="Player.xnb" t="Include" />
               <e p="RandomSampleTexture.xnb" t="Include" />
@@ -227,6 +231,7 @@
           <e p="Castle.png" t="Include" />
           <e p="CloudyBackground.hlsl" t="Include" />
           <e p="Content.mgcb" t="Include" />
+          <e p="explosion 3.png" t="Include" />
           <e p="obj" t="Include">
             <e p="DesktopGL" t="Include">
               <e p=".mgcontent" t="Include" />
@@ -237,10 +242,13 @@
                 <e p=".mgcontent" t="Include" />
                 <e p="Castle.mgcontent" t="Include" />
                 <e p="CloudyBackground.mgcontent" t="Include" />
+                <e p="explosion 3.mgcontent" t="Include" />
                 <e p="Player.mgcontent" t="Include" />
                 <e p="RandomSampleTexture.mgcontent" t="Include" />
                 <e p="rocky_tex2.mgcontent" t="Include" />
                 <e p="rocky_texture.mgcontent" t="Include" />
+                <e p="SquareBlue.mgcontent" t="Include" />
+                <e p="SquareRed.mgcontent" t="Include" />
               </e>
               <e p="Player.mgcontent" t="Include" />
               <e p="RandomSampleTexture.mgcontent" t="Include" />
@@ -252,21 +260,29 @@
           <e p="RandomSampleTexture.hlsl" t="Include" />
           <e p="rocky_tex2.png" t="Include" />
           <e p="rocky_texture.png" t="Include" />
+          <e p="SquareBlue.png" t="Include" />
+          <e p="SquareRed.png" t="Include" />
         </e>
+        <e p="EnemySpawner.cs" t="Include" />
         <e p="Entities" t="Include">
           <e p="BackGround.cs" t="Include" />
+          <e p="Bullet.cs" t="Include" />
           <e p="Camera.cs" t="Include" />
           <e p="Castle.cs" t="Include" />
+          <e p="EnemySquare.cs" t="Include" />
+          <e p="Explosion.cs" t="Include" />
           <e p="Player.cs" t="Include" />
           <e p="Terrain.cs" t="Include" />
         </e>
         <e p="InputHandling" t="Include">
-          <e p="Command.cs" t="Include" />
+          <e p="ICommand.cs" t="Include" />
           <e p="InputHandler.cs" t="Include" />
           <e p="MoveCommand.cs" t="Include" />
           <e p="RotateCommand.cs" t="Include" />
+          <e p="ShootCommand.cs" t="Include" />
         </e>
         <e p="Interfaces" t="Include">
+          <e p="IActor.cs" t="Include" />
           <e p="IMovable.cs" t="Include" />
           <e p="IPosition.cs" t="Include" />
           <e p="IPrototype.cs" t="Include" />
@@ -297,6 +313,7 @@
           </e>
         </e>
         <e p="Program.cs" t="Include" />
+        <e p="PrototypeManager.cs" t="Include" />
         <e p="Renderer.cs" t="Include" />
         <e p="ResourceManagers" t="Include">
           <e p="Effects.cs" t="Include" />
@@ -304,7 +321,6 @@
           <e p="Textures.cs" t="Include" />
         </e>
         <e p="SuperCoolGame.cs" t="Include" />
-        <e p="Ticker.cs" t="Include" />
         <e p="Updater.cs" t="Include" />
       </e>
       <e p="MyGameUni.sln" t="IncludeFlat" />

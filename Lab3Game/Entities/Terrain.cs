@@ -22,8 +22,20 @@ namespace Lab3Game.Entities
                        Texture2D texture, SuperCoolGame game)
         {
             _go = new GameObjectComponent(mesh, pos, scale, rotation);
-            _po = new PhysicsObjectComponent(game.World, _go, BodyType.Static, Category.Cat2, Category.Cat1);
+            _po = new PhysicsObjectComponent(game.World, _go, BodyType.Static, Category.Cat2 | Category.Cat3,
+                Category.Cat1);
+            //_po.Body.SetRestitution(0);
             _mat = game.CreateMaterial(MaterialType.RandomSample, texture);
+        }
+
+        public void SetBodyTag(object tag)
+        {
+            _po.Body.Tag = tag;
+        }
+
+        public void SetBodyEnabled(bool b)
+        {
+            _po.Body.Enabled = b;
         }
 
         public void Render(GraphicsDevice device, GameTime time)

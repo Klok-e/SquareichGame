@@ -4,9 +4,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Lab3Game.Entities
 {
-    public class Camera
+    public class Camera : IUpdatable
     {
         public IPosition Follow { get; set; }
+
+        private const float followMult = 5f;
+        private const float translateInterp = 0.7f;
 
         public Vector2 CamPos { get; private set; }
         public float CamSize { get; private set; }
@@ -60,7 +63,7 @@ namespace Lab3Game.Entities
                 newPos.Y -= heightOffset;
             }
 
-            CamPos = newPos;
+            CamPos = instant ? newPos : Vector2.Lerp(CamPos, newPos, translateInterp);
             return this;
         }
 
@@ -120,6 +123,19 @@ namespace Lab3Game.Entities
         {
             var (_, _, width, height) = _device.Viewport.Bounds;
             return Matrix.CreateOrthographic(width * CamSize, height * CamSize, 0.1f, 100f);
+        }
+
+        public void FixedUpdate(GameTime gameTime)
+        {
+        }
+
+        public void LateFixedUpdate(GameTime gameTime)
+        {
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            Translate((Follow.Position - CamPos) * (float) gameTime.ElapsedGameTime.TotalSeconds * followMult);
         }
     }
 }

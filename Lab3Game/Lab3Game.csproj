@@ -12,8 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="InfinitespaceStudios.Pipeline" Version="1.0.9" />
     <PackageReference Include="MonoGame.Content.Builder" Version="3.7.0.4" />
     <PackageReference Include="MonoGame.Framework.DesktopGL.Core" Version="3.7.0.7" />
+    <PackageReference Include="Myra" Version="0.9.6.184" />
   </ItemGroup>
 
   <ItemGroup>

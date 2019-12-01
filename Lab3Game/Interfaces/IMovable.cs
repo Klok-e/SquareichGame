@@ -2,9 +2,10 @@
 
 namespace Lab3Game.Interfaces
 {
-    public interface IMovable
+    public interface IControllable
     {
         void ApplyForce(Vector2 force);
         void RotateTo(Vector2 pos);
+        void Shoot();
     }
 }
