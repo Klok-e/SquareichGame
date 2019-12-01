@@ -12,6 +12,7 @@ namespace Lab3Game.Entities
 {
     public class Bullet : IUpdatable, IRenderable, IPrototype
     {
+        public bool IsExploded { get; private set; } = false;
         private GameObjectComponent _go;
         private MaterialComponent _mat;
         private PhysicsObjectComponent _po;
@@ -22,8 +23,8 @@ namespace Lab3Game.Entities
         public float Layer => 0f;
         private float _rotation;
 
-        public event Action OnHitActor;
-        public event Action OnHitTerrain;
+        public event Action OnHit;
+        //public event Action OnHitTerrain;
 
         public Bullet(Vector2 scale, Texture2D texture, SuperCoolGame game)
         {
@@ -41,14 +42,15 @@ namespace Lab3Game.Entities
                 if (other.Body.Tag is IActor actor && !(other.Body.Tag is Castle))
                 {
                     actor.GetDamage(5f);
-                    OnHitActor?.Invoke();
-                    OnHitActor = null;
                 }
                 else
                 {
-                    OnHitTerrain?.Invoke();
-                    OnHitTerrain = null;
+                    //OnHitTerrain?.Invoke();
+                    //OnHitTerrain = null;
                 }
+
+                OnHit?.Invoke();
+                OnHit = null;
 
                 return true;
             };
@@ -57,6 +59,7 @@ namespace Lab3Game.Entities
         public Explosion Explode()
         {
             var expl = new Explosion(_go.pos, new Vector2(2f), 0f, _game);
+            IsExploded = true;
             return expl;
         }
 
@@ -73,6 +76,7 @@ namespace Lab3Game.Entities
         public void Activate(Vector2 pos)
         {
             _po.Body.Position = pos;
+            _go.pos = pos;
             _po.Body.Enabled = true;
         }
 
@@ -83,11 +87,18 @@ namespace Lab3Game.Entities
 
         public void Render(GraphicsDevice device, GameTime time)
         {
-            _mat.Render(device, _go, time, Layer);
+            if (!IsExploded)
+                _mat.Render(device, _go, time, Layer);
         }
 
         public void FixedUpdate(GameTime gameTime)
         {
+            //TODO: fix this (this code shouldn't be needed)
+            if (IsExploded)
+            {
+                _po.Body.Enabled = false;
+            }
+
             _po.Body.ApplyTorque(_rotation);
         }
 

@@ -45,7 +45,7 @@ namespace Lab3Game.Entities
             Health -= amount;
             if (Health < 0f)
             {
-                Console.WriteLine("You lose!");
+                _game.MakeLose();
                 _game.Unregister(this);
                 _game.SetTimeout(() =>
                 {

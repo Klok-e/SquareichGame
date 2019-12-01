@@ -6,29 +6,21 @@ namespace Lab3Game
     public class PrototypeManager<T>
         where T : class, IPrototype
     {
-        private readonly bool _pool;
-        private Dictionary<string, (T prot, Queue<T> pool)> _prototypes = new Dictionary<string, (T, Queue<T>)>();
+        private Dictionary<string, T> _prototypes = new Dictionary<string, T>();
 
-        public PrototypeManager(bool pool)
+        public PrototypeManager()
         {
-            _pool = pool;
         }
 
         public void AddPrototype(string name, T prototype)
         {
-            _prototypes.Add(name, (prototype, new Queue<T>()));
+            _prototypes.Add(name, prototype);
         }
 
         public T Get(string name)
         {
-            var (prot, pool) = _prototypes[name];
-            return _pool && pool.Count > 0 ? pool.Dequeue() : prot.DeepClone() as T;
-        }
-
-        public void Pool(string name, T prototype)
-        {
-            var (_, pool) = _prototypes[name];
-            pool.Enqueue(prototype);
+            var prot = _prototypes[name];
+            return prot.DeepClone() as T;
         }
     }
 }

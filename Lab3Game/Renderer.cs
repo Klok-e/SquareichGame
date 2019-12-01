@@ -44,7 +44,7 @@ namespace Lab3Game
             foreach (var add in _toRemove)
                 _renderables.Remove(add);
             _toRemove.Clear();
-            
+
             var view = Camera.GetView();
             var projection = Camera.GetProjection();
             foreach (var effect in _effectsMatrices)

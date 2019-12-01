@@ -10,6 +10,9 @@ using Lab3Game.ResourceManagers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Myra;
+using Myra.Graphics2D.TextureAtlases;
+using Myra.Graphics2D.UI;
 using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Lab3Game
@@ -20,6 +23,8 @@ namespace Lab3Game
 
         public Camera Camera { get; private set; }
 
+        private Desktop _desktop;
+
         public Player Player { get; private set; }
 
         private Updater _updater;
@@ -28,8 +33,8 @@ namespace Lab3Game
 
         public Random Random { get; } = new Random();
 
-        public PrototypeManager<Bullet> BulletManager { get; } = new PrototypeManager<Bullet>(false);
-        public PrototypeManager<EnemySquare> EnemyManager { get; } = new PrototypeManager<EnemySquare>(false);
+        public PrototypeManager<Bullet> BulletManager { get; private set; }
+        public PrototypeManager<EnemySquare> EnemyManager { get; private set; }
 
         public World World { get; private set; }
 
@@ -86,6 +91,12 @@ namespace Lab3Game
             _renderer.Unregister(go);
         }
 
+        public void MakeLose()
+        {
+            Console.WriteLine("You lose!");
+            _button.Visible = true;
+            _lbl.Visible = true;
+        }
 
         public MaterialComponent CreateMaterial(MaterialType materialType, Texture2D texture)
         {
@@ -110,10 +121,46 @@ namespace Lab3Game
             return mat;
         }
 
+        private TextButton _button;
+        private Label _lbl;
+
         protected override void Initialize()
         {
+            MyraEnvironment.Game = this;
+
             World = new World();
-            _updater = new Updater();
+            _desktop = new Desktop();
+
+            var panel = new Panel();
+            _lbl = new Label
+            {
+                Text = "You died!",
+                TextColor = Color.Black,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            _button = new TextButton
+            {
+                Text = "Retry",
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Top = 50,
+            };
+            _button.Click += (send, obj) =>
+            {
+                CreateScene();
+                _button.Visible = false;
+                _lbl.Visible = false;
+            };
+            _button.Visible = false;
+            _lbl.Visible = false;
+
+            panel.Widgets.Add(_lbl);
+            panel.Widgets.Add(_button);
+
+
+            _desktop.Widgets.Add(panel);
+
             base.Initialize();
         }
 
@@ -122,9 +169,6 @@ namespace Lab3Game
             Models.Initialize(_graphics.GraphicsDevice);
             Textures.Initialize(_graphics.GraphicsDevice, Content);
             Effects.Initialize(_graphics.GraphicsDevice, Content);
-
-            var inst = Effects.Instance;
-            _renderer = new Renderer(inst.basicEffect, inst.cloudsEffect, inst.randomSampleTextureEffect);
 
             CreateScene();
         }
@@ -176,20 +220,32 @@ namespace Lab3Game
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             var device = _graphics.GraphicsDevice;
-            device.BlendState = BlendState.NonPremultiplied;
-            var rasterizerState = new RasterizerState {CullMode = CullMode.CullCounterClockwiseFace};
-            device.RasterizerState = rasterizerState;
+
 
             _updater.Update(gameTime);
 
             _renderer.Camera = Camera;
             _renderer.Render(device, gameTime);
 
+            _desktop.Render();
+
+            device.BlendState = BlendState.NonPremultiplied;
+            var rasterizerState = new RasterizerState {CullMode = CullMode.CullCounterClockwiseFace};
+            device.RasterizerState = rasterizerState;
+            device.SamplerStates[0] = SamplerState.LinearWrap;
+
             base.Draw(gameTime);
         }
 
         private void CreateScene()
         {
+            var inst = Effects.Instance;
+            _renderer = new Renderer(inst.basicEffect, inst.cloudsEffect, inst.randomSampleTextureEffect);
+            _updater = new Updater();
+            BulletManager = new PrototypeManager<Bullet>();
+            EnemyManager = new PrototypeManager<EnemySquare>();
+
+
             Camera = new Camera(_graphics.GraphicsDevice, new Vector2(), 0.03f,
                 new Vector2(60f, 20f), new Vector2(-10f, -6f));
             Camera.SetSize(Camera.CamSize);
@@ -250,9 +306,9 @@ namespace Lab3Game
 
             EnemyManager.AddPrototype("regular", regularSquare);
             EnemyManager.AddPrototype("powerful", powerfulSquare);
-            
+
             // to spawn enemies
-            //Register(new EnemySpawner(this));
+            Register(new EnemySpawner(this));
         }
     }
 }

@@ -222,10 +222,13 @@
                 <e p="SquareBlue.xnb" t="Include" />
                 <e p="SquareRed.xnb" t="Include" />
               </e>
+              <e p="explosion 3.xnb" t="Include" />
               <e p="Player.xnb" t="Include" />
               <e p="RandomSampleTexture.xnb" t="Include" />
               <e p="rocky_tex2.xnb" t="Include" />
               <e p="rocky_texture.xnb" t="Include" />
+              <e p="SquareBlue.xnb" t="Include" />
+              <e p="SquareRed.xnb" t="Include" />
             </e>
           </e>
           <e p="Castle.png" t="Include" />
@@ -250,10 +253,13 @@
                 <e p="SquareBlue.mgcontent" t="Include" />
                 <e p="SquareRed.mgcontent" t="Include" />
               </e>
+              <e p="explosion 3.mgcontent" t="Include" />
               <e p="Player.mgcontent" t="Include" />
               <e p="RandomSampleTexture.mgcontent" t="Include" />
               <e p="rocky_tex2.mgcontent" t="Include" />
               <e p="rocky_texture.mgcontent" t="Include" />
+              <e p="SquareBlue.mgcontent" t="Include" />
+              <e p="SquareRed.mgcontent" t="Include" />
             </e>
           </e>
           <e p="Player.png" t="Include" />

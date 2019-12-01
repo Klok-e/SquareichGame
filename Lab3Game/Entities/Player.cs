@@ -60,7 +60,7 @@ namespace Lab3Game.Entities
             Health -= amount;
             if (Health < 0f)
             {
-                Console.WriteLine("You lose!");
+                _game.MakeLose();
                 _game.Unregister(this);
                 _game.SetTimeout(() => _po.Body.Enabled = false, 0);
             }
@@ -72,7 +72,8 @@ namespace Lab3Game.Entities
             var vel = _po.Body.LinearVelocity;
             // for better responsiveness
             var angle = dotInvert - Vector2.Dot(force, vel);
-            _po.Body.ApplyForce(force * forceMult * angle);
+            if (!float.IsNaN(angle))
+                _po.Body.ApplyForce(force * forceMult * angle);
         }
 
         public void RotateTo(Vector2 pos)
@@ -95,37 +96,17 @@ namespace Lab3Game.Entities
             bullet.ApplyForce(dir * bulletForce);
             bullet.SetVelocity(_po.Body.LinearVelocity);
             _game.Register(bullet);
-
-            var exploded = false;
-
+            
             void OnBulletHit()
             {
-                if (exploded)
+                if (bullet.IsExploded)
                     return;
                 _deactivator.Add(name, bullet);
                 _game.Register(bullet.Explode());
-                exploded = true;
             }
 
-            bullet.OnHitActor += OnBulletHit;
+            bullet.OnHit += OnBulletHit;
 
-            void OnBulletHitTerrain()
-            {
-                _game.SetTimeout(() =>
-                {
-                    if (exploded)
-                        return;
-                    _deactivator.Add(name, bullet);
-
-                    _game.Register(bullet.Explode());
-                    exploded = true;
-                }, 1f);
-            }
-
-            bullet.OnHitTerrain += OnBulletHitTerrain;
-
-            void Action() => _deactivator.Add(name, bullet);
-            _game.SetTimeout(Action, 10);
             _lastShotTime = _game.CurrentFixedTime;
         }
 

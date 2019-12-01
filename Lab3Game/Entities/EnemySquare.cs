@@ -67,38 +67,17 @@ namespace Lab3Game.Entities
             bullet.ApplyForce(dir * bulletForce);
             bullet.SetVelocity(_po.Body.LinearVelocity);
             _game.Register(bullet);
-
-
-            var exploded = false;
-
+            
             void OnBulletHit()
             {
-                if (exploded)
+                if (bullet.IsExploded)
                     return;
                 _deactivator.Add(_bulletName, bullet);
-                bullet.Explode();
-                exploded = true;
+                _game.Register(bullet.Explode());
             }
 
-            bullet.OnHitActor += OnBulletHit;
+            bullet.OnHit += OnBulletHit;
 
-            void OnBulletHitTerrain()
-            {
-                _game.SetTimeout(() =>
-                {
-                    if (exploded)
-                        return;
-                    _deactivator.Add(_bulletName, bullet);
-
-                    bullet.Explode();
-                    exploded = true;
-                }, 1f);
-            }
-
-            bullet.OnHitTerrain += OnBulletHitTerrain;
-
-            void Action() => _deactivator.Add(_bulletName, bullet);
-            _game.SetTimeout(Action, 10);
             _lastShotTime = _game.CurrentFixedTime;
         }
 

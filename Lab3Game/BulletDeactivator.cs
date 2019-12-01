@@ -19,7 +19,6 @@ namespace Lab3Game
                 var (name, bull) = _toDeactivate.Dequeue();
                 bull.Deactivate();
                 game.Unregister(bull);
-                game.BulletManager.Pool(name, bull);
             }
         }
     }
