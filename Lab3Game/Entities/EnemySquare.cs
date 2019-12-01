@@ -29,7 +29,7 @@ namespace Lab3Game.Entities
         private const float moveForceMult = 10f;
         private const float torque = 1f;
 
-        public float Layer { get; }
+        public float Layer => 0f;
 
         public EnemySquare(SuperCoolGame game, string bulletName, float health, Texture2D texture, Vector2 pos,
                            Vector2 scale, float rotation)
@@ -63,6 +63,7 @@ namespace Lab3Game.Entities
         public void Deactivate()
         {
             _po.Body.Enabled = false;
+            _po.Body.World.Remove(_po.Body);
         }
 
         private void Shoot(Vector2 where)

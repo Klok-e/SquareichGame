@@ -13,6 +13,7 @@ namespace Lab3Game
         private bool _buffersChanged = true;
 
         public IReadOnlyList<T> Vertices => _vertices;
+        public IReadOnlyList<short> Indices => _indices;
 
         public VertexBuffer VertBuffer
         {

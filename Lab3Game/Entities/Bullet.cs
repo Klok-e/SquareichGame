@@ -26,7 +26,7 @@ namespace Lab3Game.Entities
         public event Action OnHit;
         //public event Action OnHitTerrain;
 
-        public Bullet(Vector2 scale, Texture2D texture, SuperCoolGame game)
+        public Bullet(Vector2 pos, Vector2 scale, Texture2D texture, SuperCoolGame game)
         {
             _go = new GameObjectComponent(Models.Instance.quad, new Vector2(), scale, 0f);
             _mat = game.CreateMaterial(MaterialType.Basic, texture);
@@ -34,6 +34,9 @@ namespace Lab3Game.Entities
                 Category.Cat1 | Category.Cat2, Category.Cat3);
             _po.Body.IsBullet = true;
             _po.Body.Mass = 0.02f;
+            _po.Body.Position = pos;
+            _go.pos = pos;
+
             _game = game;
             _rotation = (float) game.Random.NextDouble() * 2f / 50f;
             _tex = texture;
@@ -77,12 +80,12 @@ namespace Lab3Game.Entities
         {
             _po.Body.Position = pos;
             _go.pos = pos;
-            _po.Body.Enabled = true;
         }
 
         public void Deactivate()
         {
             _po.Body.Enabled = false;
+            _po.Body.World.Remove(_po.Body);
         }
 
         public void Render(GraphicsDevice device, GameTime time)
@@ -114,7 +117,7 @@ namespace Lab3Game.Entities
 
         public IPrototype DeepClone()
         {
-            var bullet = new Bullet(_go.scale, _tex, _game);
+            var bullet = new Bullet(_go.pos, _go.scale, _tex, _game);
             bullet.Activate(_go.pos);
             return bullet;
         }

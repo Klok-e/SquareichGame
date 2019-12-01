@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Common;
 using tainicom.Aether.Physics2D.Dynamics;
@@ -14,6 +15,7 @@ namespace Lab3Game.Components
         {
             var verts = CreateVertices(goComponent.mesh, goComponent.scale);
             Body = world.CreatePolygon(verts, 1f, goComponent.pos, goComponent.rotation, bodyType);
+
             Body.SetCollisionCategories(belongsTo);
             Body.SetCollidesWith(collidesWith);
         }

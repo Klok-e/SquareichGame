@@ -7,6 +7,7 @@ using Lab3Game.Interfaces;
 using Lab3Game.Materials;
 using Lab3Game.Materials.Abstract;
 using Lab3Game.ResourceManagers;
+using Lab3Game.Voxels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -221,7 +222,6 @@ namespace Lab3Game
 
             var device = _graphics.GraphicsDevice;
 
-
             _updater.Update(gameTime);
 
             _renderer.Camera = Camera;
@@ -247,7 +247,7 @@ namespace Lab3Game
 
 
             Camera = new Camera(_graphics.GraphicsDevice, new Vector2(), 0.03f,
-                new Vector2(45.5f, 15f), new Vector2(-9f, -5f));
+                new Vector2(45.5f, 15f), new Vector2(-9.5f, -5f));
             Camera.SetSize(Camera.CamSize);
 
             Register(Camera);
@@ -263,7 +263,7 @@ namespace Lab3Game
             Register(new Castle(100f, new Vector2(-6f, 1f), new Vector2(3f, 6f), this));
 
             // player
-            Player = new Player(new Vector2(0f, 0f), new Vector2(1f, 1f), 0f, this, 100f);
+            Player = new Player(new Vector2(0f, 2f), new Vector2(1f, 1f), 0f, this, 100f);
             Register(Player);
 
             // invisible borders
@@ -280,29 +280,30 @@ namespace Lab3Game
             Register(new Terrain(Models.Instance.quad, new Vector2(46f, 5f),
                 new Vector2(1f, 20f), 0f, Textures.Instance.transparent, this));
 
+            // voxels
+            Register(new VoxelWorld(this, new Vector2(-4f,-4f), 4, 1, 16, new Vector2(1)));
+
             Camera.Follow = Player;
 
             var scale = new Vector2(0.2f, 0.2f);
-            var triangleBullet = new Bullet(scale, Textures.Instance.player, this);
+            var triangleBullet = new Bullet(new Vector2(), scale, Textures.Instance.player, this);
             triangleBullet.Deactivate();
-            var square1Bullet = new Bullet(scale, Textures.Instance.squareBlue, this);
+            var square1Bullet = new Bullet(new Vector2(), scale, Textures.Instance.squareBlue, this);
             square1Bullet.Deactivate();
-            var square2Bullet = new Bullet(scale, Textures.Instance.squareRed, this);
+            var square2Bullet = new Bullet(new Vector2(), scale, Textures.Instance.squareRed, this);
             square2Bullet.Deactivate();
 
             BulletManager.AddPrototype("triangle", triangleBullet);
             BulletManager.AddPrototype("squareBlue", square1Bullet);
             BulletManager.AddPrototype("squareRed", square2Bullet);
 
-            var spawnPoint = new Vector2(43f, 0f);
+            var spawnPoint = new Vector2(43f, 2f);
             var regularSquare = new EnemySquare(this, "squareRed", 20f, Textures.Instance.squareRed,
                 spawnPoint, new Vector2(1f), 0f);
             regularSquare.Deactivate();
             var powerfulSquare = new EnemySquare(this, "squareBlue", 50f, Textures.Instance.squareBlue,
                 spawnPoint, new Vector2(1f), 0f);
             powerfulSquare.Deactivate();
-            //Register(regularSquare);
-            //Register(powerfulSquare);
 
             EnemyManager.AddPrototype("regular", regularSquare);
             EnemyManager.AddPrototype("powerful", powerfulSquare);

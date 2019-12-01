@@ -18,6 +18,7 @@ namespace Lab3Game.ResourceManagers
 
         public readonly Texture2D castle;
         public readonly Texture2D rocks;
+        public readonly Texture2D rocksBrown;
         public readonly Texture2D player;
         public readonly Texture2D squareRed;
         public readonly Texture2D squareBlue;
@@ -39,6 +40,7 @@ namespace Lab3Game.ResourceManagers
 
             castle = contentManager.Load<Texture2D>("Castle");
             rocks = contentManager.Load<Texture2D>("rocky_texture");
+            rocksBrown = contentManager.Load<Texture2D>("rocky_tex2");
             player = contentManager.Load<Texture2D>("Player");
             squareRed = contentManager.Load<Texture2D>("SquareRed");
             squareBlue = contentManager.Load<Texture2D>("SquareBlue");

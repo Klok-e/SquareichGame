@@ -8,6 +8,7 @@ namespace Lab3Game.Materials.Abstract
     public abstract class MaterialComponent
     {
         public Effect Effect { get; }
+        public bool IsDebug { get; set; }
 
         protected MaterialComponent(Effect effect)
         {
@@ -23,7 +24,8 @@ namespace Lab3Game.Materials.Abstract
             foreach (var pass in Effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, go.mesh.IndBuffer.IndexCount / 3);
+                device.DrawIndexedPrimitives(IsDebug ? PrimitiveType.LineList : PrimitiveType.TriangleList, 0, 0,
+                    go.mesh.IndBuffer.IndexCount / 3);
             }
         }
 
