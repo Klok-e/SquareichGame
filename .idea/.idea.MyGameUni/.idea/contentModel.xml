@@ -281,7 +281,6 @@
           <e p="Terrain.cs" t="Include" />
         </e>
         <e p="InputHandling" t="Include">
-          <e p="ColliderPathCreator.cs" t="Include" />
           <e p="ICommand.cs" t="Include" />
           <e p="InputHandler.cs" t="Include" />
           <e p="MoveCommand.cs" t="Include" />

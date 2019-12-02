@@ -8,6 +8,16 @@ using tainicom.Aether.Physics2D.Common;
 
 namespace Lab3Game.Voxels
 {
+    [Flags]
+    public enum BlockDirectionFlag : byte
+    {
+        None = 0,
+        Up = 1 << 0,
+        Down = 1 << 1,
+        Left = 1 << 2,
+        Right = 1 << 3,
+    }
+
     public class VoxelWorld : IRenderable
     {
         private readonly SuperCoolGame _game;
@@ -15,6 +25,7 @@ namespace Lab3Game.Voxels
         private readonly int _width;
         private readonly int _height;
         private readonly int _chunkSize;
+        private readonly Vector2 _scale;
         private SmoothMeshBuilder _builder = new SmoothMeshBuilder();
         private HashSet<(int x, int y, Chunk chunk)> _dirty = new HashSet<(int x, int y, Chunk chunk)>();
 
@@ -35,10 +46,11 @@ namespace Lab3Game.Voxels
             _width = width;
             _height = height;
             _chunkSize = chunkSize;
+            _scale = scale;
             for (var y = 0; y < height; y++)
             for (var x = 0; x < width; x++)
             {
-                var chunk = new Chunk(game, pos + new Vector2(x * chunkSize, y * chunkSize), scale);
+                var chunk = new Chunk(game, pos + new Vector2(x * chunkSize, y * chunkSize) * scale, scale);
                 var chunkData = new float[chunkSize, chunkSize];
                 chunk.Data = chunkData;
                 FillData(chunkData, x, y, chunkSize);
@@ -49,19 +61,111 @@ namespace Lab3Game.Voxels
             CleanDirty();
         }
 
-        public void Explode(Vector2 pos, float radius)
+        private (int x, int y) ConvertToVoxelCoords(Vector2 pos)
         {
+            pos -= _pos;
+            pos /= _scale;
+            return ((int) MathF.Floor(pos.X), (int) MathF.Floor(pos.Y));
         }
 
-        public void Fill(Vector2 pos, float radius)
+        public void ClearCircle(Vector2 pos, float radius)
         {
+            var (voxelX, voxelY) = ConvertToVoxelCoords(pos);
+            var intRad = (int) MathF.Ceiling(radius);
+            var radSqr = radius * radius;
+            for (var y = -intRad; y < intRad; y++)
+            for (var x = -intRad; x < intRad; x++)
+            {
+                SetVoxelWithPos(voxelX + x, voxelY + y, Math.Clamp(-1f, 1f, x * x + y * y - radSqr));
+            }
+        }
+
+        public void FillCircle(Vector2 pos, float radius)
+        {
+            var (voxelX, voxelY) = ConvertToVoxelCoords(pos);
+            var intRad = (int) MathF.Ceiling(radius);
+            var radSqr = radius * radius;
+            for (var y = -intRad; y < intRad; y++)
+            for (var x = -intRad; x < intRad; x++)
+            {
+                SetVoxelWithPos(voxelX + x, voxelY + y, -Math.Clamp(-1f, 1f, x * x + y * y - radSqr));
+            }
         }
 
         public void SetVoxelWithPos(int x, int y, float value)
         {
             var chunkPos = ((int) MathF.Floor((float) x / _chunkSize), (int) MathF.Floor((float) y / _chunkSize));
-            if (_chunks.ContainsKey(chunkPos))
-                _chunks[chunkPos].Data[x - chunkPos.Item1 * _chunkSize, y - chunkPos.Item2 * _chunkSize] = value;
+            if (!_chunks.ContainsKey(chunkPos))
+                return;
+
+            var ch = _chunks[chunkPos];
+            var coords = (x - chunkPos.Item1 * _chunkSize, y - chunkPos.Item2 * _chunkSize);
+            ch.Data[coords.Item1, coords.Item2] = value;
+
+            // add this chunk to dirty
+            var posCh = (chunkPos.Item1, chunkPos.Item2, ch);
+            _dirty.Add(posCh);
+
+            // check adjacent chunks
+            var dir = AreCoordsAtBordersOfChunk(coords);
+            for (var i = 0; i < 4; i++)
+            {
+                var currentDir = (BlockDirectionFlag) (1 << i);
+                if ((dir & currentDir) != 0)
+                {
+                    var nextChunkPos = AddDir(chunkPos, currentDir);
+                    if (_chunks.ContainsKey(nextChunkPos))
+                    {
+                        var nextposCh = (nextChunkPos.Item1, nextChunkPos.Item2, _chunks[nextChunkPos]);
+                        _dirty.Add(nextposCh);
+                    }
+                }
+            }
+
+            // check diagonal chunks
+            const BlockDirectionFlag leftUp = BlockDirectionFlag.Left & BlockDirectionFlag.Up;
+            if ((dir & leftUp) != 0)
+            {
+                var nextChunkPos = AddDir(chunkPos, leftUp);
+                if (_chunks.ContainsKey(nextChunkPos))
+                {
+                    var nextposCh = (nextChunkPos.Item1, nextChunkPos.Item2, _chunks[nextChunkPos]);
+                    _dirty.Add(nextposCh);
+                }
+            }
+
+            const BlockDirectionFlag leftDown = BlockDirectionFlag.Left & BlockDirectionFlag.Up;
+            if ((dir & leftDown) != 0)
+            {
+                var nextChunkPos = AddDir(chunkPos, leftDown);
+                if (_chunks.ContainsKey(nextChunkPos))
+                {
+                    var nextposCh = (nextChunkPos.Item1, nextChunkPos.Item2, _chunks[nextChunkPos]);
+                    _dirty.Add(nextposCh);
+                }
+            }
+
+            const BlockDirectionFlag rightUp = BlockDirectionFlag.Left & BlockDirectionFlag.Up;
+            if ((dir & rightUp) != 0)
+            {
+                var nextChunkPos = AddDir(chunkPos, rightUp);
+                if (_chunks.ContainsKey(nextChunkPos))
+                {
+                    var nextposCh = (nextChunkPos.Item1, nextChunkPos.Item2, _chunks[nextChunkPos]);
+                    _dirty.Add(nextposCh);
+                }
+            }
+
+            const BlockDirectionFlag rightDown = BlockDirectionFlag.Left & BlockDirectionFlag.Up;
+            if ((dir & rightDown) != 0)
+            {
+                var nextChunkPos = AddDir(chunkPos, rightDown);
+                if (_chunks.ContainsKey(nextChunkPos))
+                {
+                    var nextposCh = (nextChunkPos.Item1, nextChunkPos.Item2, _chunks[nextChunkPos]);
+                    _dirty.Add(nextposCh);
+                }
+            }
         }
 
         public float GetVoxelWithPos(int x, int y)
@@ -74,13 +178,57 @@ namespace Lab3Game.Voxels
             return -1f;
         }
 
+        private BlockDirectionFlag AreCoordsAtBordersOfChunk((int x, int y) coords)
+        {
+            var res = BlockDirectionFlag.None;
+            if (coords.x == _chunkSize - 1)
+                res |= BlockDirectionFlag.Right;
+            if (coords.x == 0)
+                res |= BlockDirectionFlag.Left;
+            if (coords.y == _chunkSize - 1)
+                res |= BlockDirectionFlag.Up;
+            if (coords.y == 0)
+                res |= BlockDirectionFlag.Down;
+            return res;
+        }
+
+        private (int x, int y) AddDir((int x, int y) coords, BlockDirectionFlag dir)
+        {
+            for (var i = 0; i < 4; i++)
+            {
+                var currentDir = (BlockDirectionFlag) (1 << i);
+                if ((dir & currentDir) == 0) continue;
+                switch (currentDir)
+                {
+                    case BlockDirectionFlag.None:
+                        throw new ArgumentOutOfRangeException(nameof(dir), dir, null);
+                    case BlockDirectionFlag.Up:
+                        coords.y += 1;
+                        break;
+                    case BlockDirectionFlag.Down:
+                        coords.y -= 1;
+                        break;
+                    case BlockDirectionFlag.Left:
+                        coords.x -= 1;
+                        break;
+                    case BlockDirectionFlag.Right:
+                        coords.x += 1;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(dir), dir, null);
+                }
+            }
+
+            return coords;
+        }
+
         void CleanDirty()
         {
             foreach (var (x, y, chunk) in _dirty)
             {
                 chunk.GetMesh().Clear();
                 _builder.BuildMesh(this, x, y, _chunkSize + 2, chunk.GetMesh());
-                chunk.UpdateCollider(CreateColliderPath(chunk.GetMesh()));
+                chunk.UpdateCollider(CreateColliderPaths(chunk.GetMesh()));
             }
         }
 
@@ -106,99 +254,13 @@ namespace Lab3Game.Voxels
                 value.Render(device, time);
         }
 
-        Vertices CreateColliderPath(Mesh<VertexPositionTexture> mesh)
+        Vertices[] CreateColliderPaths(Mesh<VertexPositionTexture> mesh)
         {
-            // Get triangles and vertices from mesh
-            //var triangles = mesh.Indices.ToArray();
-            //var vertices = mesh.Vertices.ToArray();
-//
-            //// Get just the outer edges from the mesh's triangles (ignore or remove any shared edges)
-            //var edges = new Dictionary<(int, int), int>();
-            //for (var i = 0; i < triangles.Length; i += 3)
-            //{
-            //    for (var j = 0; j < 3; j++)
-            //    {
-            //        int vert1 = triangles[i + j];
-            //        int vert2 = triangles[i + j + 1 > i + 2 ? i : i + j + 1];
-            //        var edge = ((int) MathF.Min(vert1, vert2), (int) MathF.Max(vert1, vert2));
-            //        if (!edges.ContainsKey(edge))
-            //            edges.Add(edge, 1);
-            //        else
-            //            edges[edge] += 1;
-            //    }
-            //}
-//
-            //var surfaceEdges = new List<(int, int)>();
-            //foreach (var key in edges.Keys)
-            //{
-            //    if (edges[key] == 1)
-            //        surfaceEdges.Add(key);
-            //}
-//
-            //// Create edge lookup (Key is first vertex, Value is second vertex, of each edge)
-            //var lookup = new Dictionary<int, int>();
-            //foreach (var (vert1, vert2) in edges.Keys)
-            //{
-            //    if (!lookup.ContainsKey(vert1))
-            //    {
-            //        lookup.Add(vert1, vert2);
-            //    }
-            //}
-
             var edgesss = BuildEdgesFromMesh(mesh);
             var paths = BuildColliderPaths(edgesss);
 
-            // Loop through edge vertices in order
-            //var startVert = 0;
-            //var nextVert = startVert;
-            //var highestVert = startVert;
-            //var colliderPath = new Vertices();
-            //while (true)
-            //{
-            //    // Add vertex to collider path
-            //    colliderPath.Add(vertices[nextVert].Position.ToVec2());
-//
-            //    // Get next vertex
-            //    nextVert = lookup[nextVert];
-//
-            //    // Store highest vertex (to know what shape to move to next)
-            //    if (nextVert > highestVert)
-            //    {
-            //        highestVert = nextVert;
-            //    }
-//
-            //    // Shape complete
-            //    if (nextVert == startVert)
-            //    {
-            //        //// Add path to polygon collider
-            //        //collider.Add(colliderPath);
-            //        //colliderPath = new Vertices();
-////
-            //        //// Go to next shape if one exists
-            //        //if (lookup.ContainsKey(highestVert + 1))
-            //        //{
-            //        //    // Set starting and next vertices
-            //        //    startVert = highestVert + 1;
-            //        //    nextVert = startVert;
-////
-            //        //    // Continue to next loop
-            //        //    continue;
-            //        //}
-//
-            //        // No more verts
-            //        break;
-            //    }
-            //}
-
-            return new Vertices(paths[0]);
+            return paths.Select(path => new Vertices(path)).ToArray();
         }
-
-        public void CreatePolygon2DColliderPoints()
-        {
-            //var edges = BuildEdgesFromMesh();
-            //var paths = BuildColliderPaths(edges);
-        }
-
 
         Dictionary<Edge2D, int> BuildEdgesFromMesh(Mesh<VertexPositionTexture> mesh)
         {

@@ -27,6 +27,7 @@ namespace Lab3Game
         private Desktop _desktop;
 
         public Player Player { get; private set; }
+        public VoxelWorld VoxelWorld { get; private set; }
 
         private Updater _updater;
         private Renderer _renderer;
@@ -245,7 +246,8 @@ namespace Lab3Game
             BulletManager = new PrototypeManager<Bullet>();
             EnemyManager = new PrototypeManager<EnemySquare>();
 
-
+            World.Clear();
+            
             Camera = new Camera(_graphics.GraphicsDevice, new Vector2(), 0.03f,
                 new Vector2(45.5f, 15f), new Vector2(-9.5f, -5f));
             Camera.SetSize(Camera.CamSize);
@@ -281,7 +283,8 @@ namespace Lab3Game
                 new Vector2(1f, 20f), 0f, Textures.Instance.transparent, this));
 
             // voxels
-            Register(new VoxelWorld(this, new Vector2(-4f,-4f), 4, 1, 16, new Vector2(1)));
+            VoxelWorld = new VoxelWorld(this, new Vector2(-4f, -4f), 4, 1, 16, new Vector2(1));
+            Register(VoxelWorld);
 
             Camera.Follow = Player;
 

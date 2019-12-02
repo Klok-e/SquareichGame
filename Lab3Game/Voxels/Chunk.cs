@@ -21,7 +21,7 @@ namespace Lab3Game.Voxels
         public float[,] Data { get; set; }
 
         public float Layer => -0.1f;
-        
+
         public Chunk(SuperCoolGame game, Vector2 pos, Vector2 scale)
         {
             _game = game;
@@ -29,16 +29,23 @@ namespace Lab3Game.Voxels
             _mat = game.CreateMaterial(MaterialType.RandomSample, Textures.Instance.rocks);
         }
 
-        public void UpdateCollider(Vertices vertPath)
+        public void UpdateCollider(Vertices[] vertPaths)
         {
-            if (_po == null)
+            if (_po != null)
+                for (var i = _po.FixtureList.Count - 1; i >= 0; i--)
+                    _po.Remove(_po.FixtureList[i]);
+
+            for (var i = vertPaths.Length - 1; i >= 0; i--)
             {
-                _po = _game.World.CreateChainShape(vertPath, _go.pos);
-            }
-            else
-            {
-                _po.Remove(_po.FixtureList[0]);
-                _po.CreateChainShape(vertPath);
+                if (_po == null)
+                {
+                    //if (vertPaths[i].Count > 0)
+                    _po = _game.World.CreateChainShape(vertPaths[i], _go.pos);
+                }
+                else
+                {
+                    _po.CreateChainShape(vertPaths[i]);
+                }
             }
         }
 

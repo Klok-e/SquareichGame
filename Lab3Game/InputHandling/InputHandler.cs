@@ -125,7 +125,7 @@ namespace Lab3Game.InputHandling
         {
             _keyboardState = keyboard;
             _mouseState = mouse;
-            Console.WriteLine(GetMousePos());
+            //Console.WriteLine(GetMousePos());
             var commands = new List<ICommand>();
             if (_move.axis.IsPressed(keyboard))
                 commands.Add(_move.command);
