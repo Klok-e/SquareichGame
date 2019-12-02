@@ -10,6 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:linux_hacks/WineEffectProcessor.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -27,7 +28,7 @@
 
 #begin CloudyBackground.hlsl
 /importer:EffectImporter
-/processor:EffectProcessor
+/processor:WineEffectProcessor
 /processorParam:DebugMode=Auto
 /build:CloudyBackground.hlsl
 
@@ -57,7 +58,7 @@
 
 #begin RandomSampleTexture.hlsl
 /importer:EffectImporter
-/processor:EffectProcessor
+/processor:WineEffectProcessor
 /processorParam:DebugMode=Auto
 /build:RandomSampleTexture.hlsl
 
