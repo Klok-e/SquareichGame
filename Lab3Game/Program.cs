@@ -16,5 +16,10 @@ namespace Lab3Game
         {
             return new Vector2(vec.X, vec.Y);
         }
+
+        public static Vector3 ToVec3(this Vector2 vec,float z)
+        {
+            return new Vector3(vec.X, vec.Y, z);
+        }
     }
 }

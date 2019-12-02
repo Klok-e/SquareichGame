@@ -269,6 +269,7 @@
           <e p="SquareBlue.png" t="Include" />
           <e p="SquareRed.png" t="Include" />
         </e>
+        <e p="DebugDraw.cs" t="Include" />
         <e p="EnemySpawner.cs" t="Include" />
         <e p="Entities" t="Include">
           <e p="BackGround.cs" t="Include" />

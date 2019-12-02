@@ -20,14 +20,6 @@ namespace Lab3Game.Components
             Body.SetCollidesWith(collidesWith);
         }
 
-        public void UpdateMeshCollider(GameObjectComponent goComponent)
-        {
-            Body.Remove(Body.FixtureList[0]);
-            var verts = CreateVertices(goComponent.mesh, goComponent.scale);
-            Body.CreatePolygon(verts, 1f);
-            Body.Rotation = goComponent.rotation;
-        }
-
         private static Vertices CreateVertices(Mesh<VertexPositionTexture> mesh, Vector2 scale)
         {
             var verts = new Vertices(mesh.Vertices.Count);

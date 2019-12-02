@@ -221,7 +221,15 @@ namespace Lab3Game
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            var device = _graphics.GraphicsDevice;
+            var device = _graphics.GraphicsDevice; 
+            device.BlendState = BlendState.NonPremultiplied;
+            var rasterizerState = new RasterizerState
+            {
+                CullMode = CullMode.CullCounterClockwiseFace,
+                FillMode = FillMode.Solid,
+            };
+            device.RasterizerState = rasterizerState;
+            device.SamplerStates[0] = SamplerState.LinearWrap;
 
             _updater.Update(gameTime);
 
@@ -229,11 +237,6 @@ namespace Lab3Game
             _renderer.Render(device, gameTime);
 
             _desktop.Render();
-
-            device.BlendState = BlendState.NonPremultiplied;
-            var rasterizerState = new RasterizerState {CullMode = CullMode.CullCounterClockwiseFace};
-            device.RasterizerState = rasterizerState;
-            device.SamplerStates[0] = SamplerState.LinearWrap;
 
             base.Draw(gameTime);
         }
@@ -283,8 +286,8 @@ namespace Lab3Game
                 new Vector2(1f, 20f), 0f, Textures.Instance.transparent, this));
 
             // voxels
-            VoxelWorld = new VoxelWorld(this, new Vector2(-4f, -4f), 4, 1, 16, new Vector2(1));
-            Register(VoxelWorld);
+            //VoxelWorld = new VoxelWorld(this, new Vector2(-4f, -3.5f), 1, 1, 8, new Vector2(1f));
+            //Register(VoxelWorld);
 
             Camera.Follow = Player;
 

@@ -18,7 +18,7 @@ namespace Lab3Game.Voxels
         Right = 1 << 3,
     }
 
-    public class VoxelWorld : IRenderable
+    public class VoxelWorld : IRenderable, IUpdatable
     {
         private readonly SuperCoolGame _game;
         private readonly Vector2 _pos;
@@ -76,7 +76,9 @@ namespace Lab3Game.Voxels
             for (var y = -intRad; y < intRad; y++)
             for (var x = -intRad; x < intRad; x++)
             {
-                SetVoxelWithPos(voxelX + x, voxelY + y, Math.Clamp(-1f, 1f, x * x + y * y - radSqr));
+                var voxelAtPos = GetVoxelWithPos(voxelX + x, voxelY + y);
+                SetVoxelWithPos(voxelX + x, voxelY + y,
+                    voxelAtPos + Math.Clamp((x * x + y * y - radSqr) * 2f, -1f, 0f));
             }
         }
 
@@ -88,7 +90,9 @@ namespace Lab3Game.Voxels
             for (var y = -intRad; y < intRad; y++)
             for (var x = -intRad; x < intRad; x++)
             {
-                SetVoxelWithPos(voxelX + x, voxelY + y, -Math.Clamp(-1f, 1f, x * x + y * y - radSqr));
+                var voxelAtPos = GetVoxelWithPos(voxelX + x, voxelY + y);
+                SetVoxelWithPos(voxelX + x, voxelY + y,
+                    voxelAtPos - Math.Clamp((x * x + y * y - radSqr) * 2f, -1f, 0f));
             }
         }
 
@@ -227,9 +231,11 @@ namespace Lab3Game.Voxels
             foreach (var (x, y, chunk) in _dirty)
             {
                 chunk.GetMesh().Clear();
-                _builder.BuildMesh(this, x, y, _chunkSize + 2, chunk.GetMesh());
+                _builder.BuildMesh(this, x, y, _chunkSize, chunk.GetMesh());
                 chunk.UpdateCollider(CreateColliderPaths(chunk.GetMesh()));
             }
+
+            _dirty.Clear();
         }
 
         private void FillData(float[,] data, int chunkX, int chunkY, int chunkSize)
@@ -239,10 +245,11 @@ namespace Lab3Game.Voxels
             {
                 var posX = x + chunkX * chunkSize;
                 var posY = y + chunkY * chunkSize;
-                if (posY < 5)
-                    data[x, y] = 1f;
-                else
-                    data[x, y] = -1f;
+                //if (posY < 5)
+                //    data[x, y] = 1f;
+                //else
+                //    data[x, y] = -1f;
+                data[x, y] = 1f;
             }
         }
 
@@ -259,7 +266,7 @@ namespace Lab3Game.Voxels
             var edgesss = BuildEdgesFromMesh(mesh);
             var paths = BuildColliderPaths(edgesss);
 
-            return paths.Select(path => new Vertices(path)).ToArray();
+            return paths.Select(path => new Vertices(path.Select(vert => vert * _scale))).ToArray();
         }
 
         Dictionary<Edge2D, int> BuildEdgesFromMesh(Mesh<VertexPositionTexture> mesh)
@@ -391,12 +398,37 @@ namespace Lab3Game.Voxels
 
                 Vector2 lastAddedCoordinate = coordinates[lastAddedIndex];
                 Vector2 nextCoordinate = (i + 1 >= coordinates.Count) ? coordinates[0] : coordinates[i + 1];
-
-                coordinatesCleaned.Add(coordinate);
-                lastAddedIndex = i;
+                if (!CoordinatesFormLine(lastAddedCoordinate, coordinate, nextCoordinate))
+                {
+                    coordinatesCleaned.Add(coordinate);
+                    lastAddedIndex = i;
+                }
             }
 
             return coordinatesCleaned.ToArray();
+        }
+
+        static bool CoordinatesFormLine(Vector2 a, Vector2 b, Vector2 c)
+        {
+            //If the area of a triangle created from three points is zero, they must be in a line.
+            float area = a.X * (b.Y - c.Y) +
+                         b.X * (c.Y - a.Y) +
+                         c.X * (a.Y - b.Y);
+
+            return MathF.Abs(area) < 0.00001f;
+        }
+
+        public void FixedUpdate(GameTime gameTime)
+        {
+        }
+
+        public void LateFixedUpdate(GameTime gameTime)
+        {
+            CleanDirty();
+        }
+
+        public void Update(GameTime gameTime)
+        {
         }
     }
 

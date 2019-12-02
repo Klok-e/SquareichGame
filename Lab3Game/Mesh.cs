@@ -15,7 +15,7 @@ namespace Lab3Game
         public IReadOnlyList<T> Vertices => _vertices;
         public IReadOnlyList<short> Indices => _indices;
 
-        public VertexBuffer VertBuffer
+        public DynamicVertexBuffer VertBuffer
         {
             get
             {
@@ -27,9 +27,9 @@ namespace Lab3Game
             }
         }
 
-        private VertexBuffer _vertBuffer;
+        private DynamicVertexBuffer _vertBuffer;
 
-        public IndexBuffer IndBuffer
+        public DynamicIndexBuffer IndBuffer
         {
             get
             {
@@ -41,7 +41,7 @@ namespace Lab3Game
             }
         }
 
-        private IndexBuffer _indBuffer;
+        private DynamicIndexBuffer _indBuffer;
 
         private readonly GraphicsDevice _device;
 
@@ -81,14 +81,14 @@ namespace Lab3Game
             _buffersChanged = false;
 
             // index
-            _indBuffer = new IndexBuffer(_device, typeof(short), _indices.Count,
-                BufferUsage.WriteOnly);
-            _indBuffer.SetData(_indices.ToArray());
+            _indBuffer?.Dispose();
+            _indBuffer = new DynamicIndexBuffer(_device, typeof(short), _indices.Count, BufferUsage.WriteOnly);
+            _indBuffer.SetData(_indices.ToArray(), 0, _indices.Count, SetDataOptions.Discard);
 
             // vertex
-            _vertBuffer = new VertexBuffer(_device, typeof(T), _vertices.Count,
-                BufferUsage.WriteOnly);
-            _vertBuffer.SetData(_vertices.ToArray());
+            _vertBuffer?.Dispose();
+            _vertBuffer = new DynamicVertexBuffer(_device, typeof(T), _vertices.Count, BufferUsage.WriteOnly);
+            _vertBuffer.SetData(_vertices.ToArray(), 0, _vertices.Count, SetDataOptions.Discard);
         }
     }
 }

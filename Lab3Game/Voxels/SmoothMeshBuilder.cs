@@ -14,8 +14,8 @@ namespace Lab3Game.Voxels
         {
             var bottomLeftX = chunkPosX * chunkSize;
             var bottomLeftY = chunkPosY * chunkSize;
-            for (var y = -1; y <= chunkSize; y++)
-            for (var x = -1; x <= chunkSize; x++)
+            for (var y = 0; y < chunkSize-1; y++)
+            for (var x = 0; x < chunkSize-1; x++)
             {
                 var leftDown = container.GetVoxelWithPos(bottomLeftX + x, bottomLeftY + y);
                 var leftUp = container.GetVoxelWithPos(bottomLeftX + x, bottomLeftY + y + 1);

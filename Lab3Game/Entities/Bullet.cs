@@ -63,6 +63,10 @@ namespace Lab3Game.Entities
         {
             var expl = new Explosion(_go.pos, new Vector2(2f), 0f, _game);
             IsExploded = true;
+
+            // clear voxel terrain
+            _game.VoxelWorld?.ClearCircle(_go.pos, 2f);
+
             return expl;
         }
 

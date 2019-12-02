@@ -1,4 +1,5 @@
-﻿using Lab3Game.Components;
+﻿using System.Linq;
+using Lab3Game.Components;
 using Lab3Game.Interfaces;
 using Lab3Game.Materials;
 using Lab3Game.Materials.Abstract;
@@ -18,6 +19,8 @@ namespace Lab3Game.Voxels
         private MaterialComponent _mat;
         private Body _po;
 
+        private Vertices[] wires;
+
         public float[,] Data { get; set; }
 
         public float Layer => -0.1f;
@@ -31,6 +34,8 @@ namespace Lab3Game.Voxels
 
         public void UpdateCollider(Vertices[] vertPaths)
         {
+            wires = vertPaths;
+            //return;
             if (_po != null)
                 for (var i = _po.FixtureList.Count - 1; i >= 0; i--)
                     _po.Remove(_po.FixtureList[i]);
@@ -40,11 +45,11 @@ namespace Lab3Game.Voxels
                 if (_po == null)
                 {
                     //if (vertPaths[i].Count > 0)
-                    _po = _game.World.CreateChainShape(vertPaths[i], _go.pos);
+                    _po = _game.World.CreateLoopShape(vertPaths[i], _go.pos);
                 }
                 else
                 {
-                    _po.CreateChainShape(vertPaths[i]);
+                    _po.CreateLoopShape(vertPaths[i]);
                 }
             }
         }
@@ -56,6 +61,16 @@ namespace Lab3Game.Voxels
 
         public void Render(GraphicsDevice device, GameTime time)
         {
+            var debug = new DebugDraw(device);
+            var worldView = Matrix.CreateWorld(new Vector3(_go.pos, Layer), Vector3.Forward, Vector3.Up) *
+                            _game.Camera.GetView();
+            debug.Begin(worldView, _game.Camera.GetProjection());
+            foreach (var wire in wires)
+                for (int i = 0; i < wire.Count - 1; i++)
+                    debug.DrawLine(wire[i].ToVec3(0.3f), wire[i + 1].ToVec3(0.3f), Color.Red);
+
+            debug.End();
+
             //_mat.IsDebug = true;
             _mat.Render(device, _go, time, Layer);
         }
