@@ -61,15 +61,15 @@ namespace Lab3Game.Voxels
 
         public void Render(GraphicsDevice device, GameTime time)
         {
-            var debug = new DebugDraw(device);
-            var worldView = Matrix.CreateWorld(new Vector3(_go.pos, Layer), Vector3.Forward, Vector3.Up) *
-                            _game.Camera.GetView();
-            debug.Begin(worldView, _game.Camera.GetProjection());
-            foreach (var wire in wires)
-                for (int i = 0; i < wire.Count - 1; i++)
-                    debug.DrawLine(wire[i].ToVec3(0.3f), wire[i + 1].ToVec3(0.3f), Color.Red);
-
-            debug.End();
+            //var debug = new DebugDraw(device);
+            //var worldView = Matrix.CreateWorld(new Vector3(_go.pos, Layer), Vector3.Forward, Vector3.Up) *
+            //                _game.Camera.GetView();
+            //debug.Begin(worldView, _game.Camera.GetProjection());
+            //foreach (var wire in wires)
+            //    for (int i = 0; i < wire.Count - 1; i++)
+            //        debug.DrawLine(wire[i].ToVec3(0.3f), wire[i + 1].ToVec3(0.3f), Color.Red);
+//
+            //debug.End();
 
             //_mat.IsDebug = true;
             _mat.Render(device, _go, time, Layer);
